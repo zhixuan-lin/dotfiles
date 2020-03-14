@@ -19,16 +19,25 @@ backup() {
   fi
 }
 
-
-# Check zsh is installed
-if ! type "zsh" > /dev/null; then
-    echo "Please install zsh first"
-fi
-
 # Check git is installed
 if ! type "git" > /dev/null; then
     echo "Please install git first"
+    exit
 fi
+
+# Check zsh is installed
+if ! type "zsh" > /dev/null; then
+  # Try to install zsh
+  if [[ `uname` = "Darwin" ]]; then
+      brew install zsh || exit 1
+  elif [[ `uname` = 'Linux' ]]; then
+      apt-get install zsh || exit 1
+  else
+      echo "Unknown system `uname`"; exit 1
+  fi
+    echo "Please install zsh first"
+fi
+
 
 # Install oh-my-zsh if it is not installed
 [ ! -e ~/.oh-my-zsh ] && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
