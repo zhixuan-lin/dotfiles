@@ -28,9 +28,9 @@ fi
 # Check zsh is installed
 if ! type "zsh" > /dev/null; then
   # Try to install zsh
-  if [[ `uname` == "Darwin" ]]; then
+  if [ `uname` = "Darwin" ]; then
       brew install zsh || exit 1
-  elif [[ `uname` == 'Linux' ]]; then
+  elif [ `uname` = 'Linux' ]; then
       apt-get install zsh || exit 1
   else
       echo "Unknown system `uname`"; exit 1
