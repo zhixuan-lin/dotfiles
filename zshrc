@@ -163,7 +163,9 @@ unset __conda_setup
     # https://github.com/ohmyzsh/ohmyzsh/blob/master/themes/sorin.zsh-theme
     # conda environment prompt setting
     # https://stackoverflow.com/questions/49262314/add-conda-environment-info-to-terminal-prompt
-conda config --set changeps1 false
+if type "conda" > /dev/null; then
+    conda config --set changeps1 false
+fi
 
 if [ $ZSH_THEME = "sorin" ]; then
     RPROMPT="$RPROMPT"' %B$CONDA_DEFAULT_ENV'

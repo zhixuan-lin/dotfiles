@@ -25,8 +25,9 @@
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-  exit
+  let b:firsttime=1
+else
+  let b:firsttime=0
 endif
 
 " Use :PlugInstall after adding plugins here
@@ -49,6 +50,11 @@ Plug 'edkolev/tmuxline.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
+
+" First time open vim. Install all plugins
+if b:firsttime == 1
+    PlugInstall
+endif
 
 " Colors sublime monokai
 syntax on                       
