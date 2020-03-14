@@ -38,6 +38,9 @@ if ! type "zsh" > /dev/null; then
   fi
 fi
 
+# Install oh-my-zsh if it is not installed
+[ ! -e ~/.oh-my-zsh ] && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) " "" --unattended --skip-chsh
+
 # Install python
 if ! type "python" > /dev/null; then
   # Try to install python
@@ -52,10 +55,6 @@ if ! type "python" > /dev/null; then
 fi
 
 
-# Install oh-my-zsh if it is not installed
-[ ! -e ~/.oh-my-zsh ] && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-
 for name in $DOTFILES; do
   target="$HOME/.$name"
   backup $target
@@ -65,3 +64,17 @@ for name in $DOTFILES; do
     ln -s "$PWD/$name" "$target"
   fi
 done
+
+# If current shell is zsh, source zshrc
+# Otherwise we run change shell
+if [ "$(basename "$SHELL")" = "zsh" ]; then
+    source ~/.zshrc
+else
+    if ! chsh -s "$(which zsh)" then
+        error "chsh command unsuccessful. Change your shell manually"
+    else
+        # Myserious procedure in oh my zsh
+        cat <<-'EOF'
+        EOF
+    fi
+fi
