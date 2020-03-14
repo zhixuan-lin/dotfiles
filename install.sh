@@ -28,6 +28,7 @@ fi
 # Check zsh is installed
 if ! type "zsh" > /dev/null; then
   # Try to install zsh
+  echo "Installing zsh..."
   if [ `uname` = "Darwin" ]; then
       brew install zsh || exit 1
   elif [ `uname` = 'Linux' ]; then
@@ -39,7 +40,8 @@ fi
 
 # Install python
 if ! type "python" > /dev/null; then
-  # Try to install zsh
+  # Try to install python
+  echo "Installing python..."
   if [ `uname` = "Darwin" ]; then
       brew install python || exit 1
   elif [ `uname` = 'Linux' ]; then
@@ -47,7 +49,6 @@ if ! type "python" > /dev/null; then
   else
       echo "Unknown system `uname`"; exit 1
   fi
-    echo "Please install zsh first"
 fi
 
 
