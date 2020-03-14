@@ -1,10 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/.local/bin:$HOME/bin:/usr/local/bin:/usr/bin:$PATH
 
-# Install oh-my-zsh if it is not installed
-[ ! -e ~/.oh-my-zsh ] && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -142,13 +138,6 @@ export TERM=xterm-256color
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-# Show conda environment on the right side
-    # prompt customization
-    # https://github.com/ohmyzsh/ohmyzsh/blob/master/themes/sorin.zsh-theme
-    # conda environment prompt setting
-    # https://stackoverflow.com/questions/49262314/add-conda-environment-info-to-terminal-prompt
-conda config --set changeps1 false
-RPROMPT="$RPROMPT [$CONDA_DEFAULT_ENV]"
 
 
 # added by Anaconda3 5.2.0 installer
@@ -169,3 +158,10 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+# Show conda environment on the right side
+    # prompt customization
+    # https://github.com/ohmyzsh/ohmyzsh/blob/master/themes/sorin.zsh-theme
+    # conda environment prompt setting
+    # https://stackoverflow.com/questions/49262314/add-conda-environment-info-to-terminal-prompt
+conda config --set changeps1 false
+RPROMPT="$RPROMPT [$CONDA_DEFAULT_ENV]"
