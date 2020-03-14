@@ -1,2 +1,10 @@
-# dotfiles
-Dotfiles
+# Install
+
+* `install.sh`
+
+
+# Recommended tools
+
+* `autojump`
+* `fzf`
+* `nnn`
