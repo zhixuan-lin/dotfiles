@@ -35,7 +35,6 @@ if ! type "zsh" > /dev/null; then
   else
       echo "Unknown system `uname`"; exit 1
   fi
-    echo "Please install zsh first"
 fi
 
 # Install python
