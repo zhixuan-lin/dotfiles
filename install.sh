@@ -38,6 +38,19 @@ if ! type "zsh" > /dev/null; then
     echo "Please install zsh first"
 fi
 
+# Install python
+if ! type "python" > /dev/null; then
+  # Try to install zsh
+  if [ `uname` = "Darwin" ]; then
+      brew install python || exit 1
+  elif [ `uname` = 'Linux' ]; then
+      apt-get install python || exit 1
+  else
+      echo "Unknown system `uname`"; exit 1
+  fi
+    echo "Please install zsh first"
+fi
+
 
 # Install oh-my-zsh if it is not installed
 [ ! -e ~/.oh-my-zsh ] && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
