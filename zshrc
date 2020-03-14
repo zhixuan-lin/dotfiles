@@ -72,15 +72,6 @@ plugin_path=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 plugin_path=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 [ ! -e "$plugin_path" ] && git clone https://github.com/zsh-users/zsh-autosuggestions.git "$plugin_path"
 
-# If autojump is not installed, install it. 
-# See https://stackoverflow.com/questions/7522712/how-can-i-check-if-a-command-exists-in-a-shell-script
-if ! type "autojump" > /dev/null; then
-    git clone git://github.com/wting/autojump.git
-    cd autojump
-    ./install.py 
-    cd -
-    rm -rf autojump
-fi
 
 plugins=(
   git
@@ -168,6 +159,7 @@ if type "conda" > /dev/null; then
 fi
 
 if [ $ZSH_THEME = "sorin" ]; then
+    PROMPT="%B$PROMPT"
     RPROMPT="$RPROMPT"' %B$CONDA_DEFAULT_ENV'
 fi
 if [ $ZSH_THEME = "robbyrussell" ]; then

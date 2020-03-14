@@ -65,6 +65,16 @@ for name in $DOTFILES; do
   fi
 done
 
+# If autojump is not installed, install it. 
+# See https://stackoverflow.com/questions/7522712/how-can-i-check-if-a-command-exists-in-a-shell-script
+if ! type "autojump" > /dev/null; then
+    git clone git://github.com/wting/autojump.git
+    cd autojump
+    ./install.py 
+    cd -
+    rm -rf autojump
+fi
+
 # If current shell is zsh, source zshrc
 # Otherwise we run change shell
 if [ "$(basename "$SHELL")" = "zsh" ]; then
