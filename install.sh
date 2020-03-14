@@ -78,13 +78,12 @@ fi
 # If current shell is zsh, source zshrc
 # Otherwise we run change shell
 if [ "$(basename "$SHELL")" = "zsh" ]; then
-    source ~/.zshrc
+    echo "Please run source ~/.zshrc to reload settings."
+    # source ~/.zshrc
 else
-    if ! chsh -s "$(which zsh)" then
+    if ! chsh -s "$(which zsh)"; then
         error "chsh command unsuccessful. Change your shell manually"
     else
-        # Myserious procedure in oh my zsh
-        cat <<-'EOF'
-        EOF
+        exec zsh -l
     fi
 fi
