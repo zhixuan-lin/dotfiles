@@ -87,7 +87,7 @@ if [ "$(basename "$SHELL")" = "zsh" ]; then
     echo "Done. You may need to run '${RED}source reload.sh${NC}' to reload settings."
 else
     if ! chsh -s "$(which zsh)"; then
-        error "chsh command unsuccessful. Change your shell manually"
+        echo "chsh command unsuccessful. Change your shell manually"
     else
         echo "Installation done. Please restart your session to use zsh."
         echo "After that, run '${RED}source reload.sh${NC}' to reload tmux settings"
