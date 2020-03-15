@@ -12,6 +12,8 @@
     "   https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
     "
 " Quick reference
+    " Going back and forth
+    "   ctrl-o and ctrl-i
     " Go to definition
     "   gd
     " Tabs
