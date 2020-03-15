@@ -1,2 +1,4 @@
 source ~/.zshrc
-tmux source-file ~/.tmux.conf
+if pgrep tmux > /dev/null; then
+    tmux source-file ~/.tmux.conf
+fi
