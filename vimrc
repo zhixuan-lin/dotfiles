@@ -54,6 +54,7 @@ call plug#end()
 " First time open vim. Install all plugins
 if b:firsttime == 1
     PlugInstall
+    q   "Automatically close pluging window
 endif
 
 " Colors sublime monokai
