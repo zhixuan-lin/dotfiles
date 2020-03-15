@@ -1,4 +1,4 @@
-# https://github.com/lewagon/dotfiles/blob/master/install.sh
+# Some functions are from https://github.com/lewagon/dotfiles/blob/master/install.sh
 
 # Make backup folders
 BACKUP="$HOME/.dotfiles_backup"
@@ -28,13 +28,13 @@ fi
 # Check zsh is installed
 if ! type "zsh" > /dev/null; then
   # Try to install zsh
-  echo "Installing zsh..."
+  echo "Trying to install zsh..."
   if [ `uname` = "Darwin" ]; then
       brew install zsh || exit 1
   elif [ `uname` = 'Linux' ]; then
-      apt-get install zsh || exit 1
+      sudo apt-get install zsh || exit 1
   else
-      echo "Unknown system `uname`"; exit 1
+      echo "Unknown system `uname`. Please install zsh manually"; exit 1
   fi
 fi
 
@@ -44,13 +44,13 @@ fi
 # Install python
 if ! type "python" > /dev/null; then
   # Try to install python
-  echo "Installing python..."
+  echo "Trying to install python..."
   if [ `uname` = "Darwin" ]; then
       brew install python || exit 1
   elif [ `uname` = 'Linux' ]; then
-      apt-get install python || exit 1
+      sudo apt-get install python || exit 1
   else
-      echo "Unknown system `uname`"; exit 1
+      echo "Unknown system `uname`. Please install python manually"; exit 1
   fi
 fi
 
