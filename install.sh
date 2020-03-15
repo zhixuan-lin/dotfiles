@@ -75,15 +75,23 @@ if ! type "autojump" > /dev/null; then
     rm -rf autojump
 fi
 
+
+# Colors: https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
 # If current shell is zsh, source zshrc
 # Otherwise we run change shell
 if [ "$(basename "$SHELL")" = "zsh" ]; then
-    echo "Please run source ~/.zshrc to reload settings."
-    # source ~/.zshrc
+    # Reload tmux configuration if some tmux is running.
+    echo "Done. You may need to run '${RED}source reload.sh${NC}' to reload settings."
 else
     if ! chsh -s "$(which zsh)"; then
         error "chsh command unsuccessful. Change your shell manually"
     else
-        exec zsh -l
+        echo "Installation done. Please restart your session to use zsh."
+        echo "After that, run '${RED}source reload.sh${NC}' to reload tmux settings"
     fi
 fi
+# Reload tmux settings
+# tmux source-file ~/.tmux.conf
