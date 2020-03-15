@@ -18,6 +18,8 @@
     "   gt, 1gt, tabe, tabnew
     " Join lines
     "   J
+    " vim-surround
+    "   ysiw, ds", cs", S" (in visual mode)
 
 " vim-plug
 " https://github.com/junegunn/vim-plug
