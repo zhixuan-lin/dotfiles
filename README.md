@@ -1,11 +1,11 @@
 # Install
 
-* `install.sh`
-* Note that you may need to run this for twice since oh-my-zsh will interrupt installation
+Run `install.sh`. After that, if you are not using `zsh`, you may want to restart your session. 
+Also, you may need to do `source reload.sh` to reload settings.
 
 
 # Recommended tools
 
-* `autojump`
 * `fzf`
-* `nnn`
+* `htop`
+* `gpustats`
