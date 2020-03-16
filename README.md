@@ -17,4 +17,4 @@ you may need root privilege to install these programs.
 * `tldr`
 * `htop`
 * `fzf`
-* `gpustats`
+* `gpustat`
