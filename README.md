@@ -13,8 +13,9 @@ you may need root privilege to install these programs.
 
 # Recommended tools
 
-* `autojump`
-* `tldr`
-* `htop`
-* `fzf`
-* `gpustat`
+* `tldr`: quickly figure out the usage of most commands
+* `autojump`: jump to recently visited locations
+* `nnn`: interactive terminal navigator. Supports cd on quit
+* `htop`: interactive top
+* `fzf`: fuzzy file finder
+* `gpustat`: monitor gpu usage. Way better than `nvidia-smi`
