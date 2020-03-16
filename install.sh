@@ -11,8 +11,8 @@ backup() {
   if [ -e "$target" ]; then           # Does the config file already exist?
     if [ ! -L "$target" ]; then       # If not symlink
       timestr=$(date +%Y_%m_%d_%H_%M_%S)
-      file=$(basename $target)
-      backup="$BACKUP/$file_$timestr.backup"
+      cfgname=$(basename $target)
+      backup="$BACKUP/${cfgname}_${timestr}.backup"
       mv "$target" "$backup"   # Then backup it
       echo "-----> Moved your old $target config file to $backup"
     fi
