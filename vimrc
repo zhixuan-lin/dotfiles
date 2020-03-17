@@ -1,4 +1,6 @@
 " Useful Links
+    " Most vim builtin function is in :help expr
+    "   Many usage in this plug in: https://github.com/jiangmiao/auto-pairs/blob/master/plugin/auto-pairs.vim
     " Tabs in vim:
     "   https://webdevetc.com/blog/tabs-in-vim
     " Best autocomplete
@@ -106,7 +108,11 @@ set smartcase  " If search entry contains a capital, then it becomes case sensit
 
 " Undo
 set undofile " Maintain undo history between sessions
-set undodir=~/.vim/undodir
+set undodir=~/.vim/undodir " To use this function, you must manually create this directory
+if exists("*mkdir")
+    call mkdir(expand("~/.vim/undodir"), "p")
+endif
+
 
 " Use clipboard
 set clipboard=unnamed
@@ -153,10 +159,20 @@ let g:mucomplete#enable_auto_at_startup = 1
 " Look at :help line-continuation
 " Look at :help has_key()
 " https://learnvimscriptthehardway.stevelosh.com/chapters/37.html
-" https://vi.stackexchange.com/questions/10650/add-closing-parenthesis-when-completing-function-omnicomplete
 " See :help expr4 for all available operations
-" If the last completed word ends with (, and the typed character is not )
-autocmd CompleteDone * if has_key(v:completed_item, 'word') && v:completed_item.word =~# '($' && @. !~ ')$'
-            \|   call feedkeys(")\<Left>", 'in') 
-            \| endif
+"
+func! CondInsert()
+    " Insert )\<Left> only if the previous character is not )
+    let line = getline('.')
+    let pos = col('.') - 2
+    if strgetchar(line, pos) != char2nr(')')
+        return ")\<Left>"
+    endif
+    return ""
+endf
 
+" Note that a simple feedkeys(")\<Left>") with getline check for ) wouldn't
+" work because ) is not in the line buffer when the event happen.
+autocmd! CompleteDone * if has_key(v:completed_item, 'word') && v:completed_item.word =~# '($' 
+                \| call feedkeys("\<C-R>=CondInsert()\<CR>")
+                \| endif
