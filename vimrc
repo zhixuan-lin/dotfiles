@@ -22,6 +22,8 @@
     "   J
     " vim-surround
     "   ysiw, ds", cs", S" (in visual mode)
+    " Fix indentation:
+    "   ={motion}
 
 " vim-plug
 " https://github.com/junegunn/vim-plug
@@ -39,7 +41,8 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " Declare the list of plugins.
-Plug 'ajh17/VimCompletesMe'
+" Plug 'ajh17/VimCompletesMe'
+Plug 'lifepillar/vim-mucomplete'
 Plug 'psliwka/vim-smoothie'               " Smooth scroll
 Plug 'godlygeek/tabular'                  " Align texts. Command to align python comments: Tabularize /#
 Plug 'tpope/vim-surround'                 " ds' cs' ysiw' S' (in visual mode)
@@ -50,6 +53,7 @@ Plug 'crusoexia/vim-monokai'
 Plug 'padde/jump.vim'                     " j [path]
 Plug 'itchyny/lightline.vim'
 Plug 'edkolev/tmuxline.vim' 
+
 
 
 " List ends here. Plugins become visible to Vim after this call.
@@ -84,6 +88,7 @@ set laststatus=2   " Show the status line at the bottom
 set showtabline=2  " Always show tabline
 set nowrap         " Do not wrap lines
 set noshowmode     " Do not show '--INSERT--' cause we have status line
+set completeopt=menuone,noselect  " Do not show preview window in auto complete
 
 " Tab and spaces
 " https://superuser.com/questions/4511/delete-space-expanded-tab-in-vim-with-one-keystroke
@@ -138,4 +143,9 @@ let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 " Do not pair " in vim
 " https://github.com/jiangmiao/auto-pairs/issues/204
 au Filetype vim let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'", '`':'`'}
+
+
+" auto complete
+let g:mucomplete#enable_auto_at_startup = 1
+
 
