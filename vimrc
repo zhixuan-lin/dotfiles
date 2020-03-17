@@ -148,4 +148,15 @@ au Filetype vim let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'", '`':'`'}
 " auto complete
 let g:mucomplete#enable_auto_at_startup = 1
 
+" auto pair ) if the completed item is a function
+" Look at :help CompleteDone
+" Look at :help line-continuation
+" Look at :help has_key()
+" https://learnvimscriptthehardway.stevelosh.com/chapters/37.html
+" https://vi.stackexchange.com/questions/10650/add-closing-parenthesis-when-completing-function-omnicomplete
+" See :help expr4 for all available operations
+" If the last completed word ends with (, and the typed character is not )
+autocmd CompleteDone * if has_key(v:completed_item, 'word') && v:completed_item.word =~# '($' && @. !~ ')$'
+            \|   call feedkeys(")\<Left>", 'in') 
+            \| endif
 
