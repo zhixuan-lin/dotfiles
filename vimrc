@@ -91,6 +91,7 @@ set showtabline=2  " Always show tabline
 set nowrap         " Do not wrap lines
 set noshowmode     " Do not show '--INSERT--' cause we have status line
 set completeopt=menuone,noselect  " Do not show preview window in auto complete
+set shortmess+=c   " Shut off completion messages
 
 " Tab and spaces
 " https://superuser.com/questions/4511/delete-space-expanded-tab-in-vim-with-one-keystroke
