@@ -110,7 +110,7 @@ set smartcase  " If search entry contains a capital, then it becomes case sensit
 " Undo
 set undofile " Maintain undo history between sessions
 set undodir=~/.vim/undodir " To use this function, you must manually create this directory
-if exists("*mkdir")
+if exists("*mkdir") && !isdirectory(expand("~/.vim/undodir"))
     call mkdir(expand("~/.vim/undodir"), "p")
 endif
 
