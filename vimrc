@@ -54,7 +54,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'crusoexia/vim-monokai'
 Plug 'padde/jump.vim'                     " j [path]
 Plug 'itchyny/lightline.vim'
-Plug 'edkolev/tmuxline.vim' 
+Plug 'ctrlpvim/ctrlp.vim'
 
 
 
