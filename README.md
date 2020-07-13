@@ -15,7 +15,8 @@ you may need root privilege to install these programs.
 
 * `tldr`: quickly figure out the usage of most commands
 * `autojump`: jump to recently visited locations
-* `nnn`: interactive terminal navigator. Supports cd on quit
+* `nnn`: interactive terminal navigator. Supports cd on quit with `<ctrl+g>`
 * `htop`: interactive top
 * `fzf`: fuzzy file finder
 * `gpustat`: monitor gpu usage. Way better than `nvidia-smi`
+* `rclone`: command line tool for managing cloud files
