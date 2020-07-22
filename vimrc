@@ -14,6 +14,10 @@
     "   https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
     "
 " Quick reference
+    " Split window:
+    "   ctrl+w+s and ctrl+w+v
+    " Navigating between windows:
+    "   ctrl+w+j/k/l/h
     " Going back and forth
     "   ctrl-o and ctrl-i
     " Go to definition
