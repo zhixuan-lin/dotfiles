@@ -14,6 +14,9 @@
     "   https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
     "
 " Quick reference
+    " Quit everything
+    "   :qa
+    " Close all split windows except the current one: ctrl+w+o
     " Split window:
     "   ctrl+w+s and ctrl+w+v
     " Navigating between windows:
@@ -30,6 +33,10 @@
     "   ysiw, ds", cs", S" (in visual mode)
     " Fix indentation:
     "   ={motion}
+    " Marker
+    "   Mark: m{c} Go back: `{c}
+    " Macro
+    "   Record: q{c} Finish Record: q Use macro: @{c}
 
 " vim-plug
 " https://github.com/junegunn/vim-plug
