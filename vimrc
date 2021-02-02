@@ -66,7 +66,7 @@ Plug 'crusoexia/vim-monokai'
 Plug 'padde/jump.vim'                     " j [path]
 Plug 'itchyny/lightline.vim'
 Plug 'ctrlpvim/ctrlp.vim'                 " <C-p>, <C-jkhl> to select
-Plug 'vim-syntastic/syntastic'            " Check on save. :lopen and :lclose displays error list
+Plug 'vim-syntastic/syntastic'            " :lopen and :lclose displays error list
 
 
 
