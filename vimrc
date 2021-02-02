@@ -65,7 +65,8 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'crusoexia/vim-monokai'
 Plug 'padde/jump.vim'                     " j [path]
 Plug 'itchyny/lightline.vim'
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'                 " <C-p>, <C-jkhl> to select
+Plug 'vim-syntastic/syntastic'            " Check on save. :lopen and :lclose displays error list
 
 
 
@@ -188,3 +189,9 @@ endf
 autocmd! CompleteDone * if has_key(v:completed_item, 'word') && v:completed_item.word =~# '($' 
                 \| call feedkeys("\<C-R>=CondInsert()\<CR>")
                 \| endif
+
+
+" Syntastic
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
