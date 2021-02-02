@@ -194,4 +194,4 @@ autocmd! CompleteDone * if has_key(v:completed_item, 'word') && v:completed_item
 " ALE, linter
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
-let g:ale_echo_msg_format = '[%linter%] %s'
+let g:ale_echo_msg_format = '[%linter%] %code%: %s'
