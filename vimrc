@@ -66,7 +66,7 @@ Plug 'crusoexia/vim-monokai'
 Plug 'padde/jump.vim'                     " j [path]
 Plug 'itchyny/lightline.vim'
 Plug 'ctrlpvim/ctrlp.vim'                 " <C-p>, <C-jkhl> to select
-Plug 'vim-syntastic/syntastic'            " :lopen and :lclose displays error list
+Plug 'dense-analysis/ale'                 " :lopen and :lclose displays error list. <C-j>, <C-k> navigates between errors.
 
 
 
@@ -191,7 +191,7 @@ autocmd! CompleteDone * if has_key(v:completed_item, 'word') && v:completed_item
                 \| endif
 
 
-" Syntastic
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+" ALE, linter
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+let g:ale_echo_msg_format = '[%linter%] %s'
