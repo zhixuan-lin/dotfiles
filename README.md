@@ -12,17 +12,44 @@ All configurations are light so that they work on new machines.
 However, if you don't have some basic programs like `zsh`, `git`, `python` `curl` installed, 
 you may need root privilege to install these programs.
 
-## Optional
+## Recommended tools
 
-You need to install `jedi-language-server` to support `vim-lsp`. With `vim-lsp-settings` it is simple:
-just open any python file and run `:LspInstallServer jedi-language-server`.
+* `tldr`: quickly figure out the usage of most commands
+* `autojump`: jump to recently visited locations
+* `nnn`: interactive terminal navigator. Supports cd on quit with `<ctrl+g>`
+* `htop`: interactive top
+* `fzf`: fuzzy file finder
+* `gpustat`: monitor gpu usage. Way better than `nvidia-smi`
+* `rclone`: command line tool for managing cloud files
 
-To enable linting and fixing in vim, install `flake8` and `yapf`:
+## Language servers, Linting Tools, ...
+
+### Choices
+
+The final solution is 
+
+* `ale` + `[flake8, pylint]` + `yapf` for linting and fixing. I didn't use `vim-lsp` because `ale` provides more fine-grained error highlighting while `vim-lsp` imply highlights the whole line. `flake8` with plugins is very complete, but limited because it checks each file individually. `pylint` is for errors like invalid imports, invalid members and invalid arguments.
+* `vim-lsp` for the language server protocal client. It is the only one that supports popup for signature help. Otherwise `vim-lsc` is also good.
+* `jedi-language-server` for the language server protocal server. It is the only one that (currently) supports workspace symbol search. And it is lightweight.
+
+### Installation
+
+
+You need to install `jedi-language-server` to support `vim-lsp`. With `vim-lsp-settings`, you only need this:
+
+```bash
+pip install jedi-language-server
+```
+
+To enable linting and fixing in vim, install `flake8`, `yapf` and `pylint`
 
 ```bash
 pip install flake8
+pip install pylint
 pip install yapf
 ```
+
+Note, you should install `pylint` and `jedi-language-server` under the virtual environment you want to get correct behavior. They check the imported module files. `flake8` checks files individually. It doesn't care about whether the imported module exists or a member exists so it is fine to install it globally.
 
 Recommended flake8 plugins:
 
@@ -33,13 +60,40 @@ pip install flake8-todo
 pip install pep8-naming
 ```
 
+### Project Root, Import Paths...
 
-# Recommended tools
+#### `flake8`
 
-* `tldr`: quickly figure out the usage of most commands
-* `autojump`: jump to recently visited locations
-* `nnn`: interactive terminal navigator. Supports cd on quit with `<ctrl+g>`
-* `htop`: interactive top
-* `fzf`: fuzzy file finder
-* `gpustat`: monitor gpu usage. Way better than `nvidia-smi`
-* `rclone`: command line tool for managing cloud files
+`pyflakes` checks each file individually. So there's no need to worry about paths.
+
+#### `pylint`
+
+`pylint`: we only consider the case where a path to a python file is given. Eventually, it is translated into a source root, and a set of fully qualified module names. Example
+
+```
+a
+├── b
+│   ├── __init__.py
+│   └── c
+│       ├── __init__.py
+│       └── hihi.py
+└── haha.py
+
+```
+
+And assume `pylint hihi.py`.
+
+The translation is done as follows:
+
+1. Expand the path given into absolute path. Yes, the current working directory is not used at all.
+2. Determine the source root: starting from bottom, the first directory that does *NOT* contain `__init__.py` is seen as the project root. In the above, `a` is the source root.
+3. The source root is added to the "virtual" `sys.path` for checking imports.
+4. The fully qualified module name is from the source root. I.e. `b.c.hihi`.
+
+#### Language servers
+
+At startup, LSP clients send a request to LSP servers for connection. The request contains a `rootUri` attributes that states the workspace root. This root is used for workspace symbol search etc.
+
+So, the LSP client determines the root. `vim-lsp` provides a registration function that takes a lambda for the root. `vim-lsp-settings` call that function provides the actual lambda that computes the root. The root is the nearest directory that contains one of the "markers" (e.g., `.git/`). If no such markers exist, the root seems to be set to be the cwd (not sure).
+
+`jedi-language-server` uses the root to give suggestions on imports. It seems when doing analysis with a file, `jedi-langauge-server` adds **all** intermediate paths from the project root to the virtual `sys.path`, instead only adding the root. Relative imports behave normally though.
