@@ -204,13 +204,16 @@ let g:ale_echo_msg_format = '[%linter%][%code%] %s'
 " let g:ale_echo_msg_format = '[%linter%] %s'
 " let g:ale_set_balloons = 1
 let g:ale_linters = {
-\   'python': ['flake8']
+\   'python': ['flake8', 'pylint']
 \}
 let g:ale_fixers = {
 \   'python': ['yapf']
 \}
 " Let pycodestyle report warnings instead of errors. See https://github.com/dense-analysis/ale/issues/758
 let g:ale_type_map = {'flake8': {'ES': 'WS'}}
+" For pylint only report errors. Style issues are handled with flake8. Pylint
+" catches many errors that flake8 cannot catch.
+let g:ale_python_pylint_options = '--disable=all --enable=E,F'
 
 
 """ Lsp settings
