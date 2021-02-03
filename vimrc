@@ -49,25 +49,30 @@ else
   let b:firsttime=0
 endif
 
+
 " Use :PlugInstall after adding plugins here
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
 
 " Declare the list of plugins.
-" Plug 'ajh17/VimCompletesMe'
-Plug 'lifepillar/vim-mucomplete'
-Plug 'psliwka/vim-smoothie'               " Smooth scroll
-Plug 'godlygeek/tabular'                  " Align texts. Command to align python comments: Tabularize /#
-Plug 'tpope/vim-surround'                 " ds' cs' ysiw' S' (in visual mode)
-Plug 'tpope/vim-commentary'               " Use <C-/> to comment
-Plug 'scrooloose/nerdtree'                " <C-n>
+" Plug 'lifepillar/vim-mucomplete'          " You want this if lsc completion is not working
+Plug 'psliwka/vim-smoothie'                 " Smooth scroll
+Plug 'godlygeek/tabular'                    " Align texts. Command to align python comments: Tabularize /#
+Plug 'tpope/vim-surround'                   " ds' cs' ysiw' S' (in visual mode)
+Plug 'tpope/vim-commentary'                 " Use <C-/> to comment
+Plug 'scrooloose/nerdtree'                  " <C-n>
 Plug 'jiangmiao/auto-pairs'
 Plug 'crusoexia/vim-monokai'
-Plug 'padde/jump.vim'                     " j [path]
+Plug 'padde/jump.vim'                       " j [path]
 Plug 'itchyny/lightline.vim'
-Plug 'ctrlpvim/ctrlp.vim'                 " <C-p>, <C-jkhl> to select
-Plug 'dense-analysis/ale'                 " :lopen and :lclose displays error list. <C-j>, <C-k> navigates between errors.
-
+Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select
+Plug 'prabirshrestha/vim-lsp'               " Vim language server protocal client
+Plug 'prabirshrestha/asyncomplete.vim'      " Aynsyc autocomplete
+Plug 'prabirshrestha/asyncomplete-lsp.vim'  " Helper to setup vim-lsp as source from asyncomplete
+Plug 'mattn/vim-lsp-settings'               " 1) For installing language servers (LspInstallServer) 2) For setting up vim-lsp (e.g., which server to use for which language)
+Plug 'dense-analysis/ale'                   " :lopen and :lclose displays error list. <C-j>, <C-k> navigates between errors.
+                                            " Fix with :ALEFix
+                                            " You would need to install flake8 and yapf via pip
 
 
 " List ends here. Plugins become visible to Vim after this call.
@@ -104,6 +109,7 @@ set nowrap         " Do not wrap lines
 set noshowmode     " Do not show '--INSERT--' cause we have status line
 set completeopt=menuone,noselect  " Do not show preview window in auto complete
 set shortmess+=c   " Shut off completion messages
+set signcolumn=yes " Always show sign column
 
 " Tab and spaces
 " https://superuser.com/questions/4511/delete-space-expanded-tab-in-vim-with-one-keystroke
@@ -161,11 +167,11 @@ let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 " auto-pairs
 " Do not pair " in vim
 " https://github.com/jiangmiao/auto-pairs/issues/204
-au Filetype vim let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'", '`':'`'}
+autocmd Filetype vim let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'", '`':'`'}
 
 
-" auto complete
-let g:mucomplete#enable_auto_at_startup = 1
+" Mucomplete. Turn this on if you need synchronous complete.
+" let g:mucomplete#enable_auto_at_startup = 0
 
 " auto pair ) if the completed item is a function
 " Look at :help CompleteDone
@@ -194,4 +200,62 @@ autocmd! CompleteDone * if has_key(v:completed_item, 'word') && v:completed_item
 " ALE, linter
 nmap <silent> <C-k> <Plug>(ale_previous_wrap_error)
 nmap <silent> <C-j> <Plug>(ale_next_wrap_error)
-let g:ale_echo_msg_format = '[%linter%] %code%: %s'
+let g:ale_echo_msg_format = '[%linter%][%code%] %s'
+" let g:ale_echo_msg_format = '[%linter%] %s'
+" let g:ale_set_balloons = 1
+let g:ale_linters = {
+\   'python': ['flake8']
+\}
+let g:ale_fixers = {
+\   'python': ['yapf']
+\}
+" Let pycodestyle report warnings instead of errors. See https://github.com/dense-analysis/ale/issues/758
+let g:ale_type_map = {'flake8': {'ES': 'WS'}}
+
+
+""" Lsp settings
+
+" Diable diagnostics. Use ALE instead. ALE's highlighting is more precise. May
+" change this if lsp supports better ways of highlighting.
+let g:lsp_diagnostics_enabled = 0
+" let g:lsp_diagnostics_float_cursor = 1
+" let g:lsp_diagnostics_float_delay = 500
+
+" lsp key mappings
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gs <plug>(lsp-document-symbol-search)
+    nmap <buffer> gS <plug>(lsp-workspace-symbol)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
+
+    let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+
+    " refer to doc to add more commands
+endfunction
+
+augroup lsp_install
+    au!
+    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
+
+""" lsp-settings
+let g:lsp_settings_filetype_python = 'jedi-language-server'
+
+""" Asyncomplete key mappings
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
+
