@@ -43,7 +43,7 @@ pip install jedi-language-server
 
 If you need servers for other languages, open a file with that type, and run `LspInstallServer`. The right server will be installed in `$HOME/.local/share/servers`. We don't do this for `jedi-language-server` because it should be installed in the right virtual env to be useful.
 
-`vim-lsp-settings` allows per-project configuration. See `:LspSettingsLocalEdit`. I guess it can find the settings because of the automatic root guess.
+`vim-lsp-settings` allows per-project configuration. See `:LspSettingsLocalEdit`. I guess it can find the settings because of the automatic root guess. This allows sending project specific configurations to the servers, by changing the registered information.
 
 To enable linting and fixing in vim, install `flake8`, `yapf` and `pylint`
 
