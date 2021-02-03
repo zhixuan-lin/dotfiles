@@ -1,4 +1,6 @@
-# Install
+# Dotfiles
+
+## Install
 
 Run `install.sh`. After that, if you are not using `zsh`, you may want to restart your session. 
 Also, you may need to do `source reload.sh` to reload settings.
@@ -9,6 +11,27 @@ The backup file will be saved in `~/.dotfiles_backup`.
 All configurations are light so that they work on new machines. 
 However, if you don't have some basic programs like `zsh`, `git`, `python` `curl` installed, 
 you may need root privilege to install these programs.
+
+## Optional
+
+You need to install `jedi-language-server` to support `vim-lsp`. With `vim-lsp-settings` it is simple:
+just open any python file and run `:LspInstallServer jedi-language-server`.
+
+To enable linting and fixing in vim, install `flake8` and `yapf`:
+
+```bash
+pip install flake8
+pip install yapf
+```
+
+Recommended flake8 plugins:
+
+```bash
+pip install flake8-unused-arguments
+pip install flake8-docstrings
+pip install flake8-todo
+pip install pep8-naming
+```
 
 
 # Recommended tools
