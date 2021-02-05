@@ -61,11 +61,13 @@ Plug 'godlygeek/tabular'                    " Align texts. Command to align pyth
 Plug 'tpope/vim-surround'                   " ds' cs' ysiw' S' (in visual mode)
 Plug 'tpope/vim-commentary'                 " Use <C-/> to comment
 Plug 'scrooloose/nerdtree'                  " <C-n>
+Plug 'liuchengxu/vista.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'crusoexia/vim-monokai'
 Plug 'padde/jump.vim'                       " j [path]
 Plug 'itchyny/lightline.vim'
 Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select
+Plug 'romainl/vim-cool'                     " Disable highlight after search, and show #matches 
 Plug 'prabirshrestha/vim-lsp'               " Vim language server protocal client
 Plug 'prabirshrestha/asyncomplete.vim'      " Aynsyc autocomplete
 Plug 'prabirshrestha/asyncomplete-lsp.vim'  " Helper to setup vim-lsp as source from asyncomplete
@@ -109,6 +111,7 @@ set nowrap         " Do not wrap lines
 set noshowmode     " Do not show '--INSERT--' cause we have status line
 set completeopt=menuone,noselect  " Do not show preview window in auto complete
 set shortmess+=c   " Shut off completion messages
+set shortmess-=S   " Show number of matches in searc
 set signcolumn=yes " Always show sign column
 
 " Tab and spaces
@@ -160,6 +163,9 @@ cabbrev j J
 
 " NERDTree setting
 map <C-n> :NERDTreeToggle<CR>
+
+" Vista setting
+map <C-m> :Vista!!<CR>
  
 " markdown syntax highlighting
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
@@ -261,4 +267,8 @@ inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
+
+let g:vista_default_executive = 'vim_lsp'
+let g:vista#renderer#enable_icon = 0
+let g:vista_icon_indent = ["▸ ", ""]
 
