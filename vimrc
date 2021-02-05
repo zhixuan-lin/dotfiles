@@ -36,7 +36,9 @@
     " Marker
     "   Mark: m{c} Go back: `{c}
     " Macro
-    "   Record: q{c} Finish Record: q Use macro: @{c}
+    "   Record: q{c} Finish Record: q Use macro: @{c}. Repeat last recording: @@
+    " Find
+    "   f, F, t, T. Repeat last one: ',' Repeat last one in opposite direction: ';'
 
 " vim-plug
 " https://github.com/junegunn/vim-plug
