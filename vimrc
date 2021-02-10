@@ -70,6 +70,7 @@ Plug 'padde/jump.vim'                       " j [path]
 Plug 'itchyny/lightline.vim'
 Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select
 Plug 'romainl/vim-cool'                     " Disable highlight after search, and show #matches 
+Plug 'brooth/far.vim'                       " Find and replace. :Far to find and replace, :F to find. t and T to toggle selection. s to replace. u to undo
 Plug 'prabirshrestha/vim-lsp'               " Vim language server protocal client
 Plug 'prabirshrestha/asyncomplete.vim'      " Aynsyc autocomplete
 Plug 'prabirshrestha/asyncomplete-lsp.vim'  " Helper to setup vim-lsp as source from asyncomplete
@@ -148,10 +149,13 @@ noremap <c-h> zH
 
 " Window resize problem in tmux
 " https://superuser.com/questions/549930/cant-resize-vim-splits-inside-tmux
-if has("mouse_sgr")
-    set ttymouse=sgr
-else
-    set ttymouse=xterm2
+" nvim does not have ttymouse
+if !has('nvim')
+    if has("mouse_sgr")
+        set ttymouse=sgr
+    else
+        set ttymouse=xterm2
+    end
 end
 
 " Vim commentary
@@ -210,7 +214,9 @@ nmap <silent> <C-k> <Plug>(ale_previous_wrap_error)
 nmap <silent> <C-j> <Plug>(ale_next_wrap_error)
 let g:ale_echo_msg_format = '[%linter%][%code%] %s'
 " let g:ale_echo_msg_format = '[%linter%] %s'
-" let g:ale_set_balloons = 1
+" Show error in virtual text
+" let g:ale_virtualtext_cursor = 1
+let g:ale_set_highlights = 1
 let g:ale_linters = {
 \   'python': ['flake8', 'pylint']
 \}
@@ -229,6 +235,7 @@ let g:ale_python_pylint_options = '--disable=all --enable=E,F'
 " Diable diagnostics. Use ALE instead. ALE's highlighting is more precise. May
 " change this if lsp supports better ways of highlighting.
 let g:lsp_diagnostics_enabled = 0
+" let g:lsp_diagnostics_highlights_enabled = 0
 " let g:lsp_diagnostics_float_cursor = 1
 " let g:lsp_diagnostics_float_delay = 500
 
@@ -270,7 +277,12 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
 
+""" Vista settings
 let g:vista_default_executive = 'vim_lsp'
 let g:vista#renderer#enable_icon = 0
 let g:vista_icon_indent = ["▸ ", ""]
 
+
+""" Far
+" Enable undo
+let g:far#enable_undo=1
