@@ -76,12 +76,12 @@ Plug 'scrooloose/nerdtree'                  " <C-q>
 Plug 'liuchengxu/vista.vim'                 " <C-\>
 Plug 'sainnhe/sonokai'
 Plug 'cohama/lexima.vim'
-Plug 'padde/jump.vim'                     " j [path]
+Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
+Plug 'padde/jump.vim'                       " j [path]
 Plug 'itchyny/lightline.vim'
 Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select, <C-t> new tab. I recommend you always hold ctrl when using this.
 Plug 'romainl/vim-cool'                     " Disable highlight after search, and show #matches 
 Plug 'brooth/far.vim'                       " Find and replace. :Far to find and replace, :F to find. t and T to toggle selection. s to replace. u to undo
-Plug 'Vimjas/vim-python-pep8-indent'        " Fixes python indentation issues with vim
 Plug 'prabirshrestha/vim-lsp'               " Vim language server protocal client
 Plug 'prabirshrestha/asyncomplete.vim'      " Aynsyc autocomplete
 Plug 'prabirshrestha/asyncomplete-lsp.vim'  " Helper to setup vim-lsp as source from asyncomplete
@@ -89,6 +89,8 @@ Plug 'mg979/vim-visual-multi'               " Multi-cursor. Use <ctrl-n> and <Ta
 Plug 'mattn/vim-lsp-settings'               " 1) For installing language servers (LspInstallServer) 2) For setting up vim-lsp (e.g., which server to use for which language)
 Plug 'tpope/vim-obsession'
 Plug 'dhruvasagar/vim-prosession'           " Session management. <C-s><C-s> to create/load session, <C-s><C-d> to delete session
+Plug 'gikmx/vim-ctrlposession'
+Plug 'maximbaz/lightline-ale'
 Plug 'dense-analysis/ale'                   " :lopen and :lclose displays error list. <C-j>, <C-k> navigates between errors.
                                             " Fix with :ALEFix
                                             " You would need to install flake8 and yapf via pip
@@ -111,10 +113,6 @@ let g:sonokai_transparent_background = 0
 syntax on
 colorscheme sonokai
 set termguicolors
-let g:lightline = {'colorscheme' : 'sonokai'}
-
-
-
 
 
 " UI settings
@@ -188,24 +186,28 @@ end
 " Vim commentary
 " Note that you cannot use <c-/>. Vim send <c-/> as <c-_>
 " See this: https://stackoverflow.com/questions/90l51837/how-to-map-c-to-toggle-comments-in-vim
-noremap <c-_> :Commentary<cr><cr>
+noremap <silent> <c-_> :Commentary<cr><cr>
 
 " Use jump.vim, redefine built-in 'j' as 'J'
 " https://stackoverflow.com/questions/2605036/how-to-redefine-a-command-in-vim
 cabbrev j J
 
 " NERDTree setting
-noremap <C-q> :NERDTreeToggle<CR>
+noremap <silent> <C-q> :NERDTreeToggle<CR>
 " Minimal UI
 let NERDTreeMinimalUI = 1
 
 " Vista setting
-noremap <C-\> :Vista!!<CR>
+noremap <silent> <C-\> :Vista!!<CR>
 
-" Prosession map. See https://stackoverflow.com/questions/45993666/vim-send-tab-keystroke-in-keymapping
+""" Prosession map. See https://stackoverflow.com/questions/45993666/vim-send-tab-keystroke-in-keymapping
 set wildcharm=<C-z>
-noremap <C-s><C-s> :Prosession <C-z>
-noremap <C-s><C-d> :ProsessionDelete <C-z>
+" Switch
+noremap <silent> <C-s> :CtrlPObsession <CR>
+" Create or switch
+noremap <leader>ss :Prosession <C-z>
+" Delete 
+noremap <leader>sd :ProsessionDelete <C-z>
 
 
 " markdown syntax highlighting
@@ -265,6 +267,7 @@ let g:ale_type_map = {'flake8': {'ES': 'WS'}}
 " For pylint only report errors. Style issues are handled with flake8. Pylint
 " catches many errors that flake8 cannot catch.
 let g:ale_python_pylint_options = '--disable=all --enable=E,F'
+
 
 
 """ Lsp settings
@@ -335,3 +338,24 @@ let g:VM_silent_exit = 1
 let g:VM_theme = 'iceblue'
 " Fix extra <CR> issue with autocomplete. See https://github.com/mg979/vim-visual-multi/issues/122
 autocmd User visual_multi_mappings  imap <buffer><expr> <CR> pumvisible() ? "\<C-Y>" : "\<Plug>(VM-I-Return)"
+
+
+""" Lightline
+
+let g:lightline = {'colorscheme' : 'sonokai'}
+let g:lightline.component_expand = {
+      \  'linter_checking': 'lightline#ale#checking',
+      \  'linter_infos': 'lightline#ale#infos',
+      \  'linter_warnings': 'lightline#ale#warnings',
+      \  'linter_errors': 'lightline#ale#errors',
+      \  'linter_ok': 'lightline#ale#ok',
+      \ }
+let g:lightline.component_type = {
+      \     'linter_checking': 'right',
+      \     'linter_infos': 'right',
+      \     'linter_warnings': 'warning',
+      \     'linter_errors': 'error',
+      \     'linter_ok': 'raw',
+      \ }
+let g:lightline.active = { 'right': [[ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ], ['lineinfo'], [ 'filetype', 'percent']] }
+let g:lightline.tabline = { 'left': [['tabs']], 'right': []}
