@@ -38,10 +38,10 @@ The final solution is
 You need to install `jedi-language-server` to support `vim-lsp`. With `vim-lsp-settings`, you only need this:
 
 ```bash
-pip install jedi-language-server
+LspInstallServer jedi-language-server
 ```
 
-If you need servers for other languages, open a file with that type, and run `LspInstallServer`. The right server will be installed in `$HOME/.local/share/servers`. We don't do this for `jedi-language-server` because it should be installed in the right virtual env to be useful.
+The server will be installed in `$HOME/.local/share/servers`. Note that `jedi-language-server` is aware of your virtual environment, and handles system paths correctly.
 
 `vim-lsp-settings` allows per-project configuration. See `:LspSettingsLocalEdit`. I guess it can find the settings because of the automatic root guess. This allows sending project specific configurations to the servers, by changing the registered information.
 
@@ -53,7 +53,7 @@ pip install pylint
 pip install yapf
 ```
 
-Note, you should install `pylint` and `jedi-language-server` under the virtual environment you want to get correct behavior. They check the imported module files. `flake8` checks files individually. It doesn't care about whether the imported module exists or a member exists so it is fine to install it globally.
+Note, you should install `pylint` under the virtual environment you want to get correct behavior. **It is not aware of the virtual environment.** It checks the imported module files. In contrast `flake8` checks files individually. It doesn't care about whether the imported module exists or a member exists so it is fine to install it globally.
 
 Recommended flake8 plugins:
 
@@ -94,6 +94,8 @@ The translation is done as follows:
 3. The source root is added to the "virtual" `sys.path` for checking imports.
 4. The fully qualified module name is from the source root. I.e. `b.c.hihi`.
 
+Besides, `pylint` is not aware of virtual environment. So, you have to install it in the virtual environment you want.
+
 #### Language servers
 
 At startup, LSP clients send a request to LSP servers for connection. The request contains a `rootUri` attributes that states the workspace root. This root is used for workspace symbol search etc.
@@ -101,3 +103,5 @@ At startup, LSP clients send a request to LSP servers for connection. The reques
 So, the LSP client determines the root. `vim-lsp` provides a registration function that takes a lambda for the root. `vim-lsp-settings` call that function provides the actual lambda that computes the root. The root is the nearest directory that contains one of the "markers" (e.g., `.git/`). If no such markers exist, the root seems to be set to be the cwd (not sure).
 
 `jedi-language-server` uses the root to give suggestions on imports. It seems when doing analysis with a file, `jedi-langauge-server` adds **all** intermediate paths from the project root to the virtual `sys.path`, instead only adding the root. Relative imports behave normally though.
+
+It is aware of the virtual environment. So it doesn't matter which `jedi-language-server` you can calling.
