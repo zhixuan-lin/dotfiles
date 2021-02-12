@@ -111,7 +111,7 @@ let g:sonokai_transparent_background = 0
 syntax on
 colorscheme sonokai
 set termguicolors
-let g:lightline = {'colorscheme' : 'wombat'}
+let g:lightline = {'colorscheme' : 'sonokai'}
 
 
 
