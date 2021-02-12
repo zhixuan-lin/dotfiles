@@ -100,7 +100,7 @@ Besides, `pylint` is not aware of virtual environment. So, you have to install i
 
 At startup, LSP clients send a request to LSP servers for connection. The request contains a `rootUri` attributes that states the workspace root. This root is used for workspace symbol search etc.
 
-So, the LSP client determines the root. `vim-lsp` provides a registration function that takes a lambda for the root. `vim-lsp-settings` call that function provides the actual lambda that computes the root. The root is the nearest directory that contains one of the "markers" (e.g., `.git/`). If no such markers exist, the root seems to be set to be the cwd (not sure).
+So, the LSP client determines the root. `vim-lsp` provides a registration function that takes a lambda for the root. `vim-lsp-settings` call that function provides the actual lambda that computes the root. The root is the nearest directory that contains one of the "markers" (e.g., `.git/`). If no such markers exist, the root seems to be set to be the cwd or the directory containing the current file (not sure).
 
 `jedi-language-server` uses the root to give suggestions on imports. It seems when doing analysis with a file, `jedi-langauge-server` adds **all** intermediate paths from the project root to the virtual `sys.path`, instead only adding the root. Relative imports behave normally though.
 
