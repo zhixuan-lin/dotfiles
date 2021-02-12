@@ -16,9 +16,13 @@
 " Quick reference
     " Quit everything
     "   :qa
-    " Close all split windows except the current one: ctrl+w+o
+    " Edit
+    "   D/C deletes/changes till the end. s substitutes current charater.
+    "   Visual selection + paste replaces things
+    " Close all split windows except the current one: 
+    "   ctrl+w+o
     " Split window:
-    "   ctrl+w+s and ctrl+w+v
+    "   See help ctrl-w. ctrl+w+s and ctrl+w+v. ctrl-w-c to close
     " Navigating between windows:
     "   ctrl+w+j/k/l/h
     " Going back and forth
@@ -26,7 +30,7 @@
     " Go to definition
     "   gd
     " Tabs
-    "   gt, 1gt, tabe, tabnew
+    "   gt/L, 1gt/H, tabe/tabnew
     " Join lines
     "   J
     " vim-surround
@@ -39,6 +43,12 @@
     "   Record: q{c} Finish Record: q Use macro: @{c}. Repeat last recording: @@
     " Find
     "   f, F, t, T. Repeat last one: ',' Repeat last one in opposite direction: ';'
+    " Rename file
+    "   :w {filename}
+    " Navigating in help:
+    "   gO shows TOC, <C-]> go to link, <C-t> goes back
+    " Usable ctrl keys:
+    "   https://vi.stackexchange.com/questions/22145/how-to-map-ctrl
 
 " vim-plug
 " https://github.com/junegunn/vim-plug
@@ -57,27 +67,32 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " Declare the list of plugins.
-" Plug 'lifepillar/vim-mucomplete'          " You want this if lsc completion is not working
+" Plug 'lifepillar/vim-mucomplete'          " You may want this if lsp completion is not working
 Plug 'psliwka/vim-smoothie'                 " Smooth scroll
 Plug 'godlygeek/tabular'                    " Align texts. Command to align python comments: Tabularize /#
 Plug 'tpope/vim-surround'                   " ds' cs' ysiw' S' (in visual mode)
 Plug 'tpope/vim-commentary'                 " Use <C-/> to comment
-Plug 'scrooloose/nerdtree'                  " <C-n>
-Plug 'liuchengxu/vista.vim'
-Plug 'jiangmiao/auto-pairs'
-Plug 'crusoexia/vim-monokai'
-Plug 'padde/jump.vim'                       " j [path]
+Plug 'scrooloose/nerdtree'                  " <C-q>
+Plug 'liuchengxu/vista.vim'                 " <C-\>
+Plug 'sainnhe/sonokai'
+Plug 'cohama/lexima.vim'
+Plug 'padde/jump.vim'                     " j [path]
 Plug 'itchyny/lightline.vim'
-Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select
+Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select, <C-t> new tab. I recommend you always hold ctrl when using this.
 Plug 'romainl/vim-cool'                     " Disable highlight after search, and show #matches 
 Plug 'brooth/far.vim'                       " Find and replace. :Far to find and replace, :F to find. t and T to toggle selection. s to replace. u to undo
+Plug 'Vimjas/vim-python-pep8-indent'        " Fixes python indentation issues with vim
 Plug 'prabirshrestha/vim-lsp'               " Vim language server protocal client
 Plug 'prabirshrestha/asyncomplete.vim'      " Aynsyc autocomplete
 Plug 'prabirshrestha/asyncomplete-lsp.vim'  " Helper to setup vim-lsp as source from asyncomplete
+Plug 'mg979/vim-visual-multi'               " Multi-cursor. Use <ctrl-n> and <Tab>
 Plug 'mattn/vim-lsp-settings'               " 1) For installing language servers (LspInstallServer) 2) For setting up vim-lsp (e.g., which server to use for which language)
+Plug 'tpope/vim-obsession'
+Plug 'dhruvasagar/vim-prosession'           " Session management. <C-s><C-s> to create/load session, <C-s><C-d> to delete session
 Plug 'dense-analysis/ale'                   " :lopen and :lclose displays error list. <C-j>, <C-k> navigates between errors.
                                             " Fix with :ALEFix
                                             " You would need to install flake8 and yapf via pip
+                                            "
 
 
 " List ends here. Plugins become visible to Vim after this call.
@@ -89,10 +104,15 @@ if b:firsttime == 1
     q   "Automatically close pluging window
 endif
 
-" Colors sublime monokai
+""" Color scheme
+let g:sonokai_style = 'shusia'
 syntax on                       
-colorscheme monokai
+colorscheme sonokai
 set termguicolors
+let g:lightline = {'colorscheme' : 'wombat'}
+
+
+
 
 
 " UI settings
@@ -116,6 +136,7 @@ set completeopt=menuone,noselect  " Do not show preview window in auto complete
 set shortmess+=c   " Shut off completion messages
 set shortmess-=S   " Show number of matches in searc
 set signcolumn=yes " Always show sign column
+set startofline    " Change cursor location to start of line when doing things like ^U, ^D
 
 " Tab and spaces
 " https://superuser.com/questions/4511/delete-space-expanded-tab-in-vim-with-one-keystroke
@@ -143,8 +164,12 @@ endif
 set clipboard=unnamed
 
 " Horizontal scroll binding
-noremap <c-l> zL
-noremap <c-h> zH
+noremap <c-l> 20zl
+noremap <c-h> 20zh
+
+" Quickly switch between tabs
+nnoremap H gT
+nnoremap L gt
 
 
 " Window resize problem in tmux
@@ -168,11 +193,19 @@ noremap <c-_> :Commentary<cr><cr>
 cabbrev j J
 
 " NERDTree setting
-map <C-n> :NERDTreeToggle<CR>
+noremap <C-q> :NERDTreeToggle<CR>
+" Minimal UI
+let NERDTreeMinimalUI = 1
 
 " Vista setting
-map <C-m> :Vista!!<CR>
- 
+noremap <C-\> :Vista!!<CR>
+
+" Prosession map. See https://stackoverflow.com/questions/45993666/vim-send-tab-keystroke-in-keymapping
+set wildcharm=<C-z>
+noremap <C-s><C-s> :Prosession <C-z>
+noremap <C-s><C-d> :ProsessionDelete <C-z>
+
+
 " markdown syntax highlighting
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 
@@ -212,11 +245,13 @@ autocmd! CompleteDone * if has_key(v:completed_item, 'word') && v:completed_item
 " ALE, linter
 nmap <silent> <C-k> <Plug>(ale_previous_wrap_error)
 nmap <silent> <C-j> <Plug>(ale_next_wrap_error)
-let g:ale_echo_msg_format = '[%linter%][%code%] %s'
-" let g:ale_echo_msg_format = '[%linter%] %s'
+" let g:ale_echo_msg_format = '[%linter%][%code%] %s'
+let g:ale_echo_msg_format = '[%linter%] %s'
 " Show error in virtual text
-" let g:ale_virtualtext_cursor = 1
-let g:ale_set_highlights = 1
+let g:ale_virtualtext_cursor = 0
+" let g:ale_echo_cursor = 0
+" let g:ale_set_balloons = 1
+" let g:ale_set_highlights = 1
 let g:ale_linters = {
 \   'python': ['flake8', 'pylint']
 \}
@@ -249,7 +284,7 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> gS <plug>(lsp-workspace-symbol)
     nmap <buffer> gr <plug>(lsp-references)
     nmap <buffer> gi <plug>(lsp-implementation)
-    nmap <buffer> gt <plug>(lsp-type-definition)
+    " nmap <buffer> gt <plug>(lsp-type-definition)
     nmap <buffer> <leader>rn <plug>(lsp-rename)
     nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
     nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
@@ -286,3 +321,15 @@ let g:vista_icon_indent = ["▸ ", ""]
 """ Far
 " Enable undo
 let g:far#enable_undo=1
+
+
+""" Procession on startup
+let g:prosession_on_startup = 1
+
+
+""" visual-multi
+let g:VM_quit_after_leaving_insert_mode = 0
+let g:VM_silent_exit = 1
+let g:VM_theme = 'iceblue'
+" Fix extra <CR> issue with autocomplete. See https://github.com/mg979/vim-visual-multi/issues/122
+autocmd User visual_multi_mappings  imap <buffer><expr> <CR> pumvisible() ? "\<C-Y>" : "\<Plug>(VM-I-Return)"
