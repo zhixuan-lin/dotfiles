@@ -105,8 +105,10 @@ if b:firsttime == 1
 endif
 
 """ Color scheme
-let g:sonokai_style = 'shusia'
-syntax on                       
+let g:sonokai_style = 'andromeda'
+let g:sonokai_sign_column_background = 'none'
+let g:sonokai_transparent_background = 0
+syntax on
 colorscheme sonokai
 set termguicolors
 let g:lightline = {'colorscheme' : 'wombat'}
