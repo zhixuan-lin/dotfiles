@@ -78,18 +78,18 @@ Plug 'sainnhe/sonokai'
 Plug 'cohama/lexima.vim'
 Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
 Plug 'padde/jump.vim'                       " j [path]
-Plug 'itchyny/lightline.vim'
 Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select, <C-t> new tab. I recommend you always hold ctrl when using this.
 Plug 'romainl/vim-cool'                     " Disable highlight after search, and show #matches 
 Plug 'brooth/far.vim'                       " Find and replace. :Far to find and replace, :F to find. t and T to toggle selection. s to replace. u to undo
+Plug 'mg979/vim-visual-multi'               " Multi-cursor. Use <ctrl-n> and <Tab>
 Plug 'prabirshrestha/vim-lsp'               " Vim language server protocal client
 Plug 'prabirshrestha/asyncomplete.vim'      " Aynsyc autocomplete
 Plug 'prabirshrestha/asyncomplete-lsp.vim'  " Helper to setup vim-lsp as source from asyncomplete
-Plug 'mg979/vim-visual-multi'               " Multi-cursor. Use <ctrl-n> and <Tab>
 Plug 'mattn/vim-lsp-settings'               " 1) For installing language servers (LspInstallServer) 2) For setting up vim-lsp (e.g., which server to use for which language)
 Plug 'tpope/vim-obsession'
-Plug 'dhruvasagar/vim-prosession'           " Session management. <C-s><C-s> to create/load session, <C-s><C-d> to delete session
-Plug 'gikmx/vim-ctrlposession'
+Plug 'dhruvasagar/vim-prosession'           " Session management. <leader>ss to create/load session, <leader>sd to delete session
+Plug 'gikmx/vim-ctrlposession'              " <C-s> to switch session
+Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
 Plug 'dense-analysis/ale'                   " :lopen and :lclose displays error list. <C-j>, <C-k> navigates between errors.
                                             " Fix with :ALEFix
@@ -320,7 +320,7 @@ inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 """ Vista settings
 let g:vista_default_executive = 'vim_lsp'
 let g:vista#renderer#enable_icon = 0
-let g:vista_icon_indent = ["▸ ", ""]
+" let g:vista_icon_indent = ["▸ ", ""]
 
 
 """ Far
