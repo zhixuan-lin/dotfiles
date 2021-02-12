@@ -102,6 +102,6 @@ At startup, LSP clients send a request to LSP servers for connection. The reques
 
 So, the LSP client determines the root. `vim-lsp` provides a registration function that takes a lambda for the root. `vim-lsp-settings` call that function provides the actual lambda that computes the root. The root is the nearest directory that contains one of the "markers" (e.g., `.git/`). If no such markers exist, the root seems to be set to be the cwd or the directory containing the current file (not sure).
 
-`jedi-language-server` uses the root to give suggestions on imports. It seems when doing analysis with a file, `jedi-langauge-server` adds **all** intermediate paths from the project root to the virtual `sys.path`, instead only adding the root. Relative imports behave normally though.
+`jedi-language-server` uses the root to give suggestions on imports. It seems it adds **some of** the intermediate paths from the project root to the virtual `sys.path`, instead only adding the root. The actual rule is still unclear. Seems to be due to `smart_sys_path` [here](https://jedi.readthedocs.io/en/latest/docs/api.html#jedi.Project). The actual rule seems to be defined [here](https://github.com/davidhalter/jedi/blob/44d77523b387e008a6d228c9641df95cb08233dc/jedi/api/project.py#L202). Relative imports behave normally though.
 
 It is aware of the virtual environment. So it doesn't matter which `jedi-language-server` you can calling.
