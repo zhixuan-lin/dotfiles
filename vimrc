@@ -14,13 +14,13 @@
     "   https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
     "
 " Quick reference
-    " Vim with specifiec config:
-    "   vim -u {path_to_config} No config at all: vim -u NONE
+    " Vim with specifiec config. Note -N is necessary
+    "   vim -u {path_to_config} -N No config at all: vim -u NONE -N
     " Session management
     "   :mksession and vim -S. Use :source to load a session file.
     " Working with buffers
     "   :b {bufname} goes to buffer {bufname}. It doesn't have to be full name. Most useful
-    "   :tab b {bufname} opens a buffer in a new tab
+    "   :tab sb {bufname} opens a buffer in a new tab
     "   :ls lists buffers
     "   :b[N] goes to buffer N
     "   :sb [N] | {bufname} basically similar, but opens it in split window.
