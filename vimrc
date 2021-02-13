@@ -14,8 +14,13 @@
     "   https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
     "
 " Quick reference
+    " Vim with specifiec config:
+    "   vim -u {path_to_config} No config at all: vim -u NONE
+    " Session management
+    "   :mksession and vim -S. Use :source to load a session file.
     " Working with buffers
     "   :b {bufname} goes to buffer {bufname}. It doesn't have to be full name. Most useful
+    "   :tab b {bufname} opens a buffer in a new tab
     "   :ls lists buffers
     "   :b[N] goes to buffer N
     "   :sb [N] | {bufname} basically similar, but opens it in split window.
@@ -28,8 +33,8 @@
     " Quickly show help for keyword under cursor. Works in Python as well. You
     " should just filetype plugin on. That's it.
     "   K
-    " Quit everything. Quit and save everything
-    "   :qa :xa
+    " Quit and save everything
+    "   :xa
     " Edit
     "   D/C deletes/changes till the end. 
     "   s substitutes current charater. S substitues the whole line
@@ -408,6 +413,6 @@ let g:python_highlight_space_errors = 0
 
 """CtrlP Use mixed mode
 " let g:ctrlp_map = '<leader>p'
-" You don't need mixed. Get used to use :b {bufname} to go to file
-let g:ctrlp_cmd = 'CtrlP'
-" let g:ctrlp_cmd = 'CtrlPMixed'
+" Maybe you don't need mixed. Get used to use :b {bufname} to go to file
+" let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_cmd = 'CtrlPMixed'
