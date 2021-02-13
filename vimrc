@@ -14,17 +14,37 @@
     "   https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
     "
 " Quick reference
-    " Quit everything
-    "   :qa
+    " Working with buffers
+    "   :b {bufname} goes to buffer {bufname}. It doesn't have to be full name. Most useful
+    "   :ls lists buffers
+    "   :b[N] goes to buffer N
+    "   :sb [N] | {bufname} basically similar, but opens it in split window.
+    " Quick horizonal navigation
+    "   f, F, t, T. Repeat last one: ';' Repeat last one in opposite direction: ','. But this is often for leader key
+    " Quick vertical navigation
+    "   H, L, M
+    " Quick navigation in text:
+    "   () for sentence, {} for paragraphs, [[, ]] for sections.
+    " Quickly show help for keyword under cursor. Works in Python as well. You
+    " should just filetype plugin on. That's it.
+    "   K
+    " Quit everything. Quit and save everything
+    "   :qa :xa
     " Edit
-    "   D/C deletes/changes till the end. s substitutes current charater.
+    "   D/C deletes/changes till the end. 
+    "   s substitutes current charater. S substitues the whole line
+    "   `I` insert at line start. Useful for commenting. `A` insert at line end
     "   Visual selection + paste replaces things
-    " Close all split windows except the current one: 
-    "   ctrl+w+o
     " Split window:
-    "   See help ctrl-w. ctrl+w+s and ctrl+w+v. ctrl-w-c to close
+    "   See help ctrl-w for more. ctrl+w+s and ctrl+w+v. ctrl-w-c to close
+    " Close all split windows except the current one: 
+    "   ctrl+w+o. :help ctrl-w to see more on this topic.
     " Navigating between windows:
     "   ctrl+w+j/k/l/h
+    " Opens window in a new tab:
+    "   ctrl+w+T
+    " Move current window to far top/bottom/left/right
+    "   ctrl+w+K/J/H/L
     " Going back and forth
     "   ctrl-o and ctrl-i
     " Go to definition
@@ -41,14 +61,14 @@
     "   Mark: m{c} Go back: `{c}
     " Macro
     "   Record: q{c} Finish Record: q Use macro: @{c}. Repeat last recording: @@
-    " Find
-    "   f, F, t, T. Repeat last one: ',' Repeat last one in opposite direction: ';'
     " Rename file
     "   :w {filename}
     " Navigating in help:
     "   gO shows TOC, <C-]> go to link, <C-t> goes back
     " Usable ctrl keys:
     "   https://vi.stackexchange.com/questions/22145/how-to-map-ctrl
+    "   Suggestion: don't use ctrl unless you need to keep applying it (like
+    "   Commentary)
 
 " vim-plug
 " https://github.com/junegunn/vim-plug
@@ -88,7 +108,7 @@ Plug 'prabirshrestha/asyncomplete.vim'      " Aynsyc autocomplete
 Plug 'prabirshrestha/asyncomplete-lsp.vim'  " Helper to setup vim-lsp as source from asyncomplete
 Plug 'mattn/vim-lsp-settings'               " 1) For installing language servers (LspInstallServer) 2) For setting up vim-lsp (e.g., which server to use for which language)
 Plug 'tpope/vim-obsession'
-Plug 'dhruvasagar/vim-prosession'           " Session management. <leader>ss to create/load session, <leader>sd to delete session
+Plug 'dhruvasagar/vim-prosession'           " Session management. <leader>pc to create/load session, <leader>pd to delete session
 Plug 'gikmx/vim-ctrlposession'              " <C-s> to switch session
 Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
@@ -116,6 +136,11 @@ colorscheme material
 set termguicolors
 " Disable tilde https://stackoverflow.com/questions/3813059/is-it-possible-to-not-display-a-for-blank-lines-in-vim-neovim
 highlight NonText guifg=bg
+" Fix italics in Vim: https://github.com/kaicataldo/material.vim/issues/56
+if !has('nvim')
+  let &t_ZH="\e[3m"
+  let &t_ZR="\e[23m"
+endif
 
 
 " UI settings
@@ -167,12 +192,26 @@ endif
 set clipboard=unnamed
 
 " Horizontal scroll binding
-noremap <c-l> 20zl
-noremap <c-h> 20zh
+" Disabled this. Get used to zH and zL please.
+" noremap L 20zl
+" noremap H 20zh
+"
+" Quick horizontal navigation. 
+" You don't need this. Get used to using FfTt and ; instead.
+" noremap L 20l
+" noremap H 20h
+"
+" Quick vertical navigation. 
+" You don't need this. First, H and L are useful. Second, 
+" noremap J 5l
+" noremap K 5h
 
 " Quickly switch between tabs
-nnoremap H gT
-nnoremap L gt
+nnoremap <c-h> gT
+nnoremap <c-l> gt
+
+"""Leader key
+let mapleader = ","
 
 
 " Window resize problem in tmux
@@ -196,21 +235,21 @@ noremap <silent> <c-_> :Commentary<cr><cr>
 cabbrev j J
 
 " NERDTree setting
-noremap <silent> <C-q> :NERDTreeToggle<CR>
+noremap <silent> <leader>e :NERDTreeToggle<CR>
 " Minimal UI
 let NERDTreeMinimalUI = 1
 
 " Vista setting
-noremap <silent> <C-\> :Vista!!<CR>
+noremap <silent> <leader>v :Vista!!<CR>
 
 """ Prosession map. See https://stackoverflow.com/questions/45993666/vim-send-tab-keystroke-in-keymapping
 set wildcharm=<C-z>
 " Switch
-noremap <silent> <C-s> :CtrlPObsession <CR>
+noremap <silent> <leader>s :CtrlPObsession <CR>
 " Create or switch
-noremap <leader>ss :Prosession <C-z>
+noremap <leader>pc :Prosession <C-z>
 " Delete 
-noremap <leader>sd :ProsessionDelete <C-z>
+noremap <leader>pd :ProsessionDelete <C-z>
 
 
 " markdown syntax highlighting
@@ -367,3 +406,8 @@ let g:lightline.tabline = { 'left': [['tabs']], 'right': []}
 " Disable highlighting for trailing whitespace https://github.com/sheerun/vim-polyglot/issues/333
 let g:python_highlight_space_errors = 0
 
+"""CtrlP Use mixed mode
+" let g:ctrlp_map = '<leader>p'
+" You don't need mixed. Get used to use :b {bufname} to go to file
+let g:ctrlp_cmd = 'CtrlP'
+" let g:ctrlp_cmd = 'CtrlPMixed'
