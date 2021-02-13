@@ -72,10 +72,11 @@ Plug 'psliwka/vim-smoothie'                 " Smooth scroll
 Plug 'godlygeek/tabular'                    " Align texts. Command to align python comments: Tabularize /#
 Plug 'tpope/vim-surround'                   " ds' cs' ysiw' S' (in visual mode)
 Plug 'tpope/vim-commentary'                 " Use <C-/> to comment
-Plug 'scrooloose/nerdtree'                  " <C-q>
+Plug 'scrooloose/nerdtree'                  " <C-q> to toggle. Press m to open a menu for things like deleting a file
 Plug 'liuchengxu/vista.vim'                 " <C-\>
 Plug 'cohama/lexima.vim'
-Plug 'sainnhe/edge'                         " Sonokai by the same author is also great
+" Plug 'sainnhe/edge'                         " Sonokai by the same author is also great
+Plug 'kaicataldo/material.vim'
 Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
 Plug 'padde/jump.vim'                       " j [path]
 Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select, <C-t> new tab. I recommend you always hold ctrl when using this.
@@ -107,12 +108,11 @@ if b:firsttime == 1
 endif
 
 """ Color scheme
-let g:edge_style = 'neon'
-let g:edge_sign_column_background = 'none'
-let g:edge_enable_italic = 1
 
+let g:material_terminal_italics = 1
+let g:material_theme_style = 'darker'
 syntax on
-colorscheme edge
+colorscheme material
 set termguicolors
 
 
@@ -343,7 +343,7 @@ autocmd User visual_multi_mappings  imap <buffer><expr> <CR> pumvisible() ? "\<C
 
 """ Lightline
 
-let g:lightline = {'colorscheme' : 'edge'}
+let g:lightline = {'colorscheme' : 'material_vim'}
 let g:lightline.component_expand = {
       \  'linter_checking': 'lightline#ale#checking',
       \  'linter_infos': 'lightline#ale#infos',
@@ -360,3 +360,8 @@ let g:lightline.component_type = {
       \ }
 let g:lightline.active = { 'right': [[ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ], ['lineinfo'], [ 'filetype', 'percent']] }
 let g:lightline.tabline = { 'left': [['tabs']], 'right': []}
+
+""" Polyglot
+" Disable highlighting for trailing whitespace https://github.com/sheerun/vim-polyglot/issues/333
+let g:python_highlight_space_errors = 0
+
