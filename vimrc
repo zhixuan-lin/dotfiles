@@ -74,8 +74,8 @@ Plug 'tpope/vim-surround'                   " ds' cs' ysiw' S' (in visual mode)
 Plug 'tpope/vim-commentary'                 " Use <C-/> to comment
 Plug 'scrooloose/nerdtree'                  " <C-q>
 Plug 'liuchengxu/vista.vim'                 " <C-\>
-Plug 'sainnhe/sonokai'
 Plug 'cohama/lexima.vim'
+Plug 'sainnhe/edge'                         " Sonokai by the same author is also great
 Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
 Plug 'padde/jump.vim'                       " j [path]
 Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select, <C-t> new tab. I recommend you always hold ctrl when using this.
@@ -107,11 +107,12 @@ if b:firsttime == 1
 endif
 
 """ Color scheme
-let g:sonokai_style = 'andromeda'
-let g:sonokai_sign_column_background = 'none'
-let g:sonokai_transparent_background = 0
+let g:edge_style = 'neon'
+let g:edge_sign_column_background = 'none'
+let g:edge_enable_italic = 1
+
 syntax on
-colorscheme sonokai
+colorscheme edge
 set termguicolors
 
 
@@ -342,7 +343,7 @@ autocmd User visual_multi_mappings  imap <buffer><expr> <CR> pumvisible() ? "\<C
 
 """ Lightline
 
-let g:lightline = {'colorscheme' : 'sonokai'}
+let g:lightline = {'colorscheme' : 'edge'}
 let g:lightline.component_expand = {
       \  'linter_checking': 'lightline#ale#checking',
       \  'linter_infos': 'lightline#ale#infos',
