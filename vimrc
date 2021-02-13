@@ -110,10 +110,12 @@ endif
 """ Color scheme
 
 let g:material_terminal_italics = 1
-let g:material_theme_style = 'darker'
+" let g:material_theme_style = 'darker'
 syntax on
 colorscheme material
 set termguicolors
+" Disable tilde https://stackoverflow.com/questions/3813059/is-it-possible-to-not-display-a-for-blank-lines-in-vim-neovim
+highlight NonText guifg=bg
 
 
 " UI settings
