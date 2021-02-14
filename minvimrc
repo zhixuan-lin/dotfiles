@@ -5,11 +5,12 @@
 " A truly minimal vimrc without any plugins or keymaps while working well.
 " This is what you should write from memory within 30 seconds when you are using vim in a new server.
 " Remember the smart things that you can do with raw vim:
-"     use :mksession and vim -S to maintain sessions
-"     :e to edit file
+"     use :mksession/:msk and vim -S to maintain sessions
+"     :e to edit file. :e and then press <C-d> lists files in the directory
 "     :b {bufname} to open a buffer. :tab sb to open a buffer in a new tab
-"     :help tabe to see tab related things. Useful ones: tabe, gt, gT, {n}gt
+"     :help tabe to see tab related things. Useful ones: tabe, gt, gT, {n}gt, tabm
 "     :help ctrl-w to see window related things. Useful ones: vs hjkl oc HJKL T
+"     :ter to open a terminal. <C-\><C-n> enter normal mode. Any insert command enters terminal mode.
 "     K to show help info for keyword under cursor
 "     <c-n> to perform autocompletion.
 "     use macros. Record: q{c} Apply: @{c} Repeat: @@

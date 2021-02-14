@@ -14,6 +14,13 @@
     "   https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
     "
 " Quick reference
+    " Terminal
+    "   Open terminal: :ter. In vim terminal opens in new split window. In nvim it opens in current window.
+    "   Enter normal mode: <C-\><C-n>. Enter terminal mode: any command that enter the insert mode.
+    " List files in directory
+    "   :e and then press <C-d>. Also works with partial paths
+    " Delete words in command line:
+    "   <C-w>
     " Vim with specifiec config. Note -N is necessary
     "   vim -u {path_to_config} -N No config at all: vim -u NONE -N
     " Session management
@@ -55,7 +62,8 @@
     " Go to definition
     "   gd
     " Tabs
-    "   gt/L, 1gt/H, tabe/tabnew
+    "   gt, 1gt, tabe/tabnew
+    "   Move tab: tabm {N} to be after current tab n
     " Join lines
     "   J
     " vim-surround
