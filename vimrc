@@ -15,7 +15,7 @@
     "
 " Quick reference
     " Terminal
-    "   Open terminal: :ter. In vim terminal opens in new split window. In nvim it opens in current window.
+    "   Open terminal: :ter. In vim terminal opens in new split window, so :tab ter opens it in a new tab. In nvim it opens in current window, so tabe | ter helps.
     "   Enter normal mode: <C-\><C-n>. Enter terminal mode: any command that enter the insert mode.
     " List files in directory
     "   :e and then press <C-d>. Also works with partial paths
@@ -200,6 +200,11 @@ if exists("*mkdir") && !isdirectory(expand("~/.vim/undodir"))
     call mkdir(expand("~/.vim/undodir"), "p")
 endif
 
+" Do not show line numbers in terminal mode in nvim.
+if has('nvim')
+    autocmd TermEnter * setlocal nonumber norelativenumber
+    autocmd TermLeave * setlocal number relativenumber
+endif
 
 " Use clipboard
 set clipboard=unnamed
@@ -253,7 +258,7 @@ noremap <silent> <leader>e :NERDTreeToggle<CR>
 let NERDTreeMinimalUI = 1
 
 " Vista setting
-noremap <silent> <leader>v :Vista!!<CR>
+noremap <silent> <leader>t :Vista!!<CR>
 
 """ Prosession map. See https://stackoverflow.com/questions/45993666/vim-send-tab-keystroke-in-keymapping
 set wildcharm=<C-z>
@@ -422,5 +427,5 @@ let g:python_highlight_space_errors = 0
 """CtrlP Use mixed mode
 " let g:ctrlp_map = '<leader>p'
 " Maybe you don't need mixed. Get used to use :b {bufname} to go to file
-" let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_cmd = 'CtrlPMixed'
+let g:ctrlp_cmd = 'CtrlP'
+" let g:ctrlp_cmd = 'CtrlPMixed'
