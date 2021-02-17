@@ -8,9 +8,8 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="robbyrussell"
-# ZSH_THEME="sorin"
-# ZSH_THEME="typewritten"
+# ZSH_THEME="robbyrussell"
+ZSH_THEME="refined"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -158,10 +157,9 @@ if type "conda" > /dev/null; then
     conda config --set changeps1 false
 fi
 
-if [ $ZSH_THEME = "sorin" ]; then
-    PROMPT="%B$PROMPT"
-    RPROMPT="$RPROMPT"' %B$CONDA_DEFAULT_ENV'
-fi
 if [ $ZSH_THEME = "robbyrussell" ]; then
+    RPROMPT='%B$CONDA_DEFAULT_ENV'
+fi
+if [ $ZSH_THEME = "refined" ]; then
     RPROMPT='%B$CONDA_DEFAULT_ENV'
 fi
