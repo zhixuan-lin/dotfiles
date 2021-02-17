@@ -33,6 +33,7 @@
     "   :sb [N] | {bufname} basically similar, but opens it in split window.
     " Quick horizonal navigation
     "   f, F, t, T. Repeat last one: ';' Repeat last one in opposite direction: ','. But this is often for leader key
+    "   Note you can use these with c,d,v,y
     " Quick vertical navigation
     "   H, L, M
     " Quick navigation in text:
@@ -108,7 +109,7 @@ Plug 'tpope/vim-commentary'                 " Use <C-/> to comment
 Plug 'scrooloose/nerdtree'                  " <C-q> to toggle. Press m to open a menu for things like deleting a file
 Plug 'liuchengxu/vista.vim'                 " <C-\>
 Plug 'cohama/lexima.vim'
-" Plug 'sainnhe/edge'                         " Sonokai by the same author is also great
+" Plug 'sainnhe/edge'                        " Sonokai by the same author is also great
 Plug 'kaicataldo/material.vim'
 Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
 Plug 'padde/jump.vim'                       " j [path]
