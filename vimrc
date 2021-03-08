@@ -17,6 +17,11 @@
     " Terminal
     "   Open terminal: :ter. In vim terminal opens in new split window, so :tab ter opens it in a new tab. In nvim it opens in current window, so tabe | ter helps.
     "   Enter normal mode: <C-\><C-n>. Enter terminal mode: any command that enter the insert mode.
+    " Insert mode special keys (ins-special-keys): there are many keys you can use in the insert mode:
+    "   ctrl-w: delete one word, probably the most useful
+    "   ctrl-t, ctrl-d: basically << and >> in insert mode
+    "   ctrl-r " paste clip board
+    "   Other keys are not so useful and you probably do not want to use them.
     " List files in directory
     "   :e and then press <C-d>. Also works with partial paths
     " Delete words in command line:
@@ -102,6 +107,7 @@ call plug#begin('~/.vim/plugged')
 
 " Declare the list of plugins.
 " Plug 'lifepillar/vim-mucomplete'          " You may want this if lsp completion is not working
+Plug 'tpope/vim-fugitive'
 Plug 'psliwka/vim-smoothie'                 " Smooth scroll
 Plug 'godlygeek/tabular'                    " Align texts. Command to align python comments: Tabularize /#
 Plug 'tpope/vim-surround'                   " ds' cs' ysiw' S' (in visual mode)
@@ -110,13 +116,13 @@ Plug 'scrooloose/nerdtree'                  " <C-q> to toggle. Press m to open a
 Plug 'liuchengxu/vista.vim'                 " <C-\>
 Plug 'cohama/lexima.vim'
 " Plug 'sainnhe/edge'                        " Sonokai by the same author is also great
-Plug 'kaicataldo/material.vim'
+Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
 Plug 'padde/jump.vim'                       " j [path]
 Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select, <C-t> new tab. I recommend you always hold ctrl when using this.
 Plug 'romainl/vim-cool'                     " Disable highlight after search, and show #matches 
 Plug 'brooth/far.vim'                       " Find and replace. :Far to find and replace, :F to find. t and T to toggle selection. s to replace. u to undo
-Plug 'mg979/vim-visual-multi'               " Multi-cursor. Use <ctrl-n> and <Tab>
+Plug 'mg979/vim-visual-multi'               " Multi-cursor. Use <ctrl-n> to add selection and <Tab> to switch between cursor-mode and visual-mode.
 Plug 'prabirshrestha/vim-lsp'               " Vim language server protocal client
 Plug 'prabirshrestha/asyncomplete.vim'      " Aynsyc autocomplete
 Plug 'prabirshrestha/asyncomplete-lsp.vim'  " Helper to setup vim-lsp as source from asyncomplete
@@ -126,6 +132,10 @@ Plug 'dhruvasagar/vim-prosession'           " Session management. <leader>pc to 
 Plug 'gikmx/vim-ctrlposession'              " <C-s> to switch session
 Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
+Plug 'airblade/vim-gitgutter'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'              " Snippet supports. vim-lsp supports retrieving snippet from server, and async can actually complete it. But it does not support snippet functionalities like editing two places at the same time
+Plug 'neomake/neomake'                      " Neomake! is just async make
 Plug 'dense-analysis/ale'                   " :lopen and :lclose displays error list. <C-j>, <C-k> navigates between errors.
                                             " Fix with :ALEFix
                                             " You would need to install flake8 and yapf via pip
@@ -177,8 +187,16 @@ set noshowmode     " Do not show '--INSERT--' cause we have status line
 set completeopt=menuone,noselect  " Do not show preview window in auto complete
 set shortmess+=c   " Shut off completion messages
 set shortmess-=S   " Show number of matches in searc
-set signcolumn=yes " Always show sign column
 set startofline    " Change cursor location to start of line when doing things like ^U, ^D
+
+" Sign column. See :help signcolumn
+if has('nvim') 
+    set signcolumn=yes:2
+else
+    set signcolumn=yes 
+end
+
+
 
 " Tab and spaces
 " https://superuser.com/questions/4511/delete-space-expanded-tab-in-vim-with-one-keystroke
@@ -244,6 +262,9 @@ if !has('nvim')
     end
 end
 
+" Fix annoying indentation behavior in tex files itemize environments.  https://www.reddit.com/r/neovim/comments/991kmv/annoying_auto_indentation_in_tex_files/
+let g:tex_indent_items = 0
+
 " Vim commentary
 " Note that you cannot use <c-/>. Vim send <c-/> as <c-_>
 " See this: https://stackoverflow.com/questions/90l51837/how-to-map-c-to-toggle-comments-in-vim
@@ -264,7 +285,7 @@ noremap <silent> <leader>t :Vista!!<CR>
 """ Prosession map. See https://stackoverflow.com/questions/45993666/vim-send-tab-keystroke-in-keymapping
 set wildcharm=<C-z>
 " Switch
-noremap <silent> <leader>s :CtrlPObsession <CR>
+noremap <silent> <C-s> :CtrlPObsession <CR>
 " Create or switch
 noremap <leader>pc :Prosession <C-z>
 " Delete 
@@ -283,39 +304,17 @@ autocmd Filetype vim let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'", '`':'
 " Mucomplete. Turn this on if you need synchronous complete.
 " let g:mucomplete#enable_auto_at_startup = 0
 
-" auto pair ) if the completed item is a function
-" Look at :help CompleteDone
-" Look at :help line-continuation
-" Look at :help has_key()
-" https://learnvimscriptthehardway.stevelosh.com/chapters/37.html
-" See :help expr4 for all available operations
-"
-func! CondInsert()
-    " Insert )\<Left> only if the previous character is not )
-    let line = getline('.')
-    let pos = col('.') - 2
-    if strgetchar(line, pos) != char2nr(')')
-        return ")\<Left>"
-    endif
-    return ""
-endf
-
-" Note that a simple feedkeys(")\<Left>") with getline check for ) wouldn't
-" work because ) is not in the line buffer when the event happen.
-autocmd! CompleteDone * if has_key(v:completed_item, 'word') && v:completed_item.word =~# '($' 
-                \| call feedkeys("\<C-R>=CondInsert()\<CR>")
-                \| endif
-
 
 " ALE, linter
 nmap <silent> <C-k> <Plug>(ale_previous_wrap_error)
 nmap <silent> <C-j> <Plug>(ale_next_wrap_error)
 " let g:ale_echo_msg_format = '[%linter%][%code%] %s'
 let g:ale_echo_msg_format = '[%linter%] %s'
+let g:ale_sign_warning = '!!'
 " Show error in virtual text
-let g:ale_virtualtext_cursor = 0
+" let g:ale_virtualtext_cursor = 0
 " let g:ale_echo_cursor = 0
-" let g:ale_set_balloons = 1
+let g:ale_set_balloons = 0
 " let g:ale_set_highlights = 1
 let g:ale_linters = {
 \   'python': ['flake8', 'pylint']
@@ -343,7 +342,6 @@ let g:lsp_diagnostics_enabled = 0
 " lsp key mappings
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
     nmap <buffer> gd <plug>(lsp-definition)
     nmap <buffer> gs <plug>(lsp-document-symbol-search)
@@ -430,3 +428,20 @@ let g:python_highlight_space_errors = 0
 " Maybe you don't need mixed. Get used to use :b {bufname} to go to file
 let g:ctrlp_cmd = 'CtrlP'
 " let g:ctrlp_cmd = 'CtrlPMixed'
+
+
+let g:automake_enabled = 0
+function! s:setautomake()
+    if g:automake_enabled == 0
+        augroup Automake
+            au BufWrite *.tex if filereadable('Makefile') | Neomake! | endif
+        augroup END
+        let g:automake_enabled = 1
+    else
+        augroup! Automake
+        let g:automake_enabled = 0
+    endif
+endfunction
+
+command! AutomakeToggle call s:setautomake()
+
