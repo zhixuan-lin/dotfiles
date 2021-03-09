@@ -14,6 +14,8 @@
     "   https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
     "
 " Quick reference
+    " i_CTLR-O:
+    "   Allows you to execute one normal mode command, and then go back to insert mode       
     " Terminal
     "   Open terminal: :ter. In vim terminal opens in new split window, so :tab ter opens it in a new tab. In nvim it opens in current window, so tabe | ter helps.
     "   Enter normal mode: <C-\><C-n>. Enter terminal mode: any command that enter the insert mode.
@@ -227,21 +229,6 @@ endif
 
 " Use clipboard
 set clipboard=unnamed
-
-" Horizontal scroll binding
-" Disabled this. Get used to zH and zL please.
-" noremap L 20zl
-" noremap H 20zh
-"
-" Quick horizontal navigation. 
-" You don't need this. Get used to using FfTt and ; instead.
-" noremap L 20l
-" noremap H 20h
-"
-" Quick vertical navigation. 
-" You don't need this. First, H and L are useful. Second, 
-" noremap J 5l
-" noremap K 5h
 
 " Quickly switch between tabs
 nnoremap <c-h> gT
