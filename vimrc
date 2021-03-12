@@ -14,15 +14,15 @@
     "   https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
     "
 " Quick reference
-    " i_CTLR-O:
-    "   Allows you to execute one normal mode command, and then go back to insert mode       
     " Terminal
     "   Open terminal: :ter. In vim terminal opens in new split window, so :tab ter opens it in a new tab. In nvim it opens in current window, so tabe | ter helps.
     "   Enter normal mode: <C-\><C-n>. Enter terminal mode: any command that enter the insert mode.
     " Insert mode special keys (ins-special-keys): there are many keys you can use in the insert mode:
     "   ctrl-w: delete one word, probably the most useful
+    "   ctrl-u: delete line till indent
     "   ctrl-t, ctrl-d: basically << and >> in insert mode
     "   ctrl-r " paste clip board
+    "   ctrl-o: allows you to execute one normal mode command, and then go back to insert mode
     "   Other keys are not so useful and you probably do not want to use them.
     " List files in directory
     "   :e and then press <C-d>. Also works with partial paths
@@ -38,6 +38,8 @@
     "   :ls lists buffers
     "   :b[N] goes to buffer N
     "   :sb [N] | {bufname} basically similar, but opens it in split window.
+    " Show file info:
+    "   <C-g>
     " Quick horizonal navigation
     "   f, F, t, T. Repeat last one: ';' Repeat last one in opposite direction: ','. But this is often for leader key
     "   Note you can use these with c,d,v,y
@@ -109,7 +111,7 @@ call plug#begin('~/.vim/plugged')
 
 " Declare the list of plugins.
 " Plug 'lifepillar/vim-mucomplete'          " You may want this if lsp completion is not working
-Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'                   " Git
 Plug 'psliwka/vim-smoothie'                 " Smooth scroll
 Plug 'godlygeek/tabular'                    " Align texts. Command to align python comments: Tabularize /#
 Plug 'tpope/vim-surround'                   " ds' cs' ysiw' S' (in visual mode)
@@ -118,6 +120,7 @@ Plug 'scrooloose/nerdtree'                  " <C-q> to toggle. Press m to open a
 Plug 'liuchengxu/vista.vim'                 " <C-\>
 Plug 'cohama/lexima.vim'
 " Plug 'sainnhe/edge'                        " Sonokai by the same author is also great
+" Plug 'sainnhe/sonokai'                        " Sonokai by the same author is also great
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
 Plug 'padde/jump.vim'                       " j [path]
@@ -132,8 +135,7 @@ Plug 'mattn/vim-lsp-settings'               " 1) For installing language servers
 Plug 'tpope/vim-obsession'
 Plug 'dhruvasagar/vim-prosession'           " Session management. <leader>pc to create/load session, <leader>pd to delete session
 Plug 'gikmx/vim-ctrlposession'              " <C-s> to switch session
-Plug 'itchyny/lightline.vim'
-Plug 'maximbaz/lightline-ale'
+Plug 'vim-airline/vim-airline'
 Plug 'airblade/vim-gitgutter'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'              " Snippet supports. vim-lsp supports retrieving snippet from server, and async can actually complete it. But it does not support snippet functionalities like editing two places at the same time
@@ -156,7 +158,7 @@ endif
 """ Color scheme
 
 let g:material_terminal_italics = 1
-" let g:material_theme_style = 'darker'
+let g:material_theme_style = 'default'
 syntax on
 colorscheme material
 set termguicolors
@@ -272,7 +274,7 @@ noremap <silent> <leader>t :Vista!!<CR>
 """ Prosession map. See https://stackoverflow.com/questions/45993666/vim-send-tab-keystroke-in-keymapping
 set wildcharm=<C-z>
 " Switch
-noremap <silent> <C-s> :CtrlPObsession <CR>
+noremap <silent> <leader>s :CtrlPObsession <CR>
 " Create or switch
 noremap <leader>pc :Prosession <C-z>
 " Delete 
@@ -386,25 +388,6 @@ let g:VM_theme = 'iceblue'
 autocmd User visual_multi_mappings  imap <buffer><expr> <CR> pumvisible() ? "\<C-Y>" : "\<Plug>(VM-I-Return)"
 
 
-""" Lightline
-
-let g:lightline = {'colorscheme' : 'material_vim'}
-let g:lightline.component_expand = {
-      \  'linter_checking': 'lightline#ale#checking',
-      \  'linter_infos': 'lightline#ale#infos',
-      \  'linter_warnings': 'lightline#ale#warnings',
-      \  'linter_errors': 'lightline#ale#errors',
-      \  'linter_ok': 'lightline#ale#ok',
-      \ }
-let g:lightline.component_type = {
-      \     'linter_checking': 'right',
-      \     'linter_infos': 'right',
-      \     'linter_warnings': 'warning',
-      \     'linter_errors': 'error',
-      \     'linter_ok': 'raw',
-      \ }
-let g:lightline.active = { 'right': [[ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ], ['lineinfo'], [ 'filetype', 'percent']] }
-let g:lightline.tabline = { 'left': [['tabs']], 'right': []}
 
 """ Polyglot
 " Disable highlighting for trailing whitespace https://github.com/sheerun/vim-polyglot/issues/333
@@ -432,3 +415,7 @@ endfunction
 
 command! AutomakeToggle call s:setautomake()
 
+let g:airline_extensions = ['ale', 'hunks', 'ctrlp', 'branch', 'vista', 'obsession']
+let airline#extensions#ale#show_line_numbers = 0
+" let g:airline_section_y = ''
+let g:airline_section_z = '%p%% ☰ %l/%L'
