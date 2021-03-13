@@ -110,7 +110,6 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " Declare the list of plugins.
-" Plug 'lifepillar/vim-mucomplete'          " You may want this if lsp completion is not working
 Plug 'tpope/vim-fugitive'                   " Git
 Plug 'psliwka/vim-smoothie'                 " Smooth scroll
 Plug 'godlygeek/tabular'                    " Align texts. Command to align python comments: Tabularize /#
@@ -119,9 +118,8 @@ Plug 'tpope/vim-commentary'                 " Use <C-/> to comment
 Plug 'scrooloose/nerdtree'                  " <C-q> to toggle. Press m to open a menu for things like deleting a file
 Plug 'liuchengxu/vista.vim'                 " <C-\>
 Plug 'cohama/lexima.vim'                    " Auto pair
-" Plug 'kaicataldo/material.vim', { 'branch': 'main' }
-Plug 'overcache/NeoSolarized'
-Plug 'lifepillar/vim-solarized8'
+Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+" Plug 'overcache/NeoSolarized'
 Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
 Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select, <C-t> new tab. I recommend you always hold ctrl when using this.
 Plug 'romainl/vim-cool'                     " Disable highlight after search, and show #matches 
@@ -159,13 +157,19 @@ endif
 
 """ Color scheme
 
-let g:neosolarized_italic = 1
+" let g:neosolarized_italic = 1
 syntax on
 set background=dark
-colorscheme NeoSolarized
-" Disable tilde https://stackoverflow.com/questions/3813059/is-it-possible-to-not-display-a-for-blank-lines-in-vim-neovim
+let g:material_theme_style = 'palenight'
+let g:material_terminal_italics = 1
+colorscheme material
 set termguicolors
-highlight NonText guifg=bg
+" Disable tilde. https://github.com/neovim/neovim/issues/2067
+hi! EndOfBuffer guifg=bg
+if !has('nvim')
+  let &t_ZH="\e[3m"
+  let &t_ZR="\e[23m"
+endif
 
 
 " UI settings
