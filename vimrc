@@ -327,6 +327,9 @@ let g:ale_python_pylint_options = '--disable=all --enable=E,F'
 " Diable diagnostics. Use ALE instead. ALE's highlighting is more precise. May
 " change this if lsp supports better ways of highlighting.
 let g:lsp_diagnostics_enabled = 0
+" With this enabled a temporary buffer called 'VS.Vim.Buffer' will be created,
+" which is not loadable when restoring session and causes error.
+let g:lsp_completion_documentation_enabled = 0
 " let g:lsp_diagnostics_highlights_enabled = 0
 " let g:lsp_diagnostics_float_cursor = 1
 " let g:lsp_diagnostics_float_delay = 500
