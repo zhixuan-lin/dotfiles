@@ -437,6 +437,3 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ 'Unknown'   :'?',
                 \ }
 
-" GitGutter, next hunks
-nmap <silent> <C-h> <Plug>(GitGutterPrevHunk)
-nmap <silent> <C-l> <Plug>(GitGutterNextHunk)
