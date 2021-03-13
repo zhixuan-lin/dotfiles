@@ -20,6 +20,7 @@ you may need root privilege to install these programs.
 * `htop`: interactive top
 * `fzf`: fuzzy file finder
 * `gpustat`: monitor gpu usage. Way better than `nvidia-smi`
+* `ripgrep`: best `grep` tool
 * `rclone`: command line tool for managing cloud files
 
 ## Language servers, Linting Tools, ...
