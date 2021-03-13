@@ -18,6 +18,7 @@
     "   Open terminal: :ter. In vim terminal opens in new split window, so :tab ter opens it in a new tab. In nvim it opens in current window, so tabe | ter helps.
     "   Enter normal mode: <C-\><C-n>. Enter terminal mode: any command that enter the insert mode.
     " Insert mode special keys (ins-special-keys): there are many keys you can use in the insert mode:
+    "   ctrl-h: delete one character.
     "   ctrl-w: delete one word, probably the most useful
     "   ctrl-u: delete line till indent
     "   ctrl-t, ctrl-d: basically << and >> in insert mode
@@ -123,8 +124,7 @@ Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
 Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select, <C-t> new tab. I recommend you always hold ctrl when using this.
 Plug 'romainl/vim-cool'                     " Disable highlight after search, and show #matches 
-Plug 'brooth/far.vim'                       " Find and replace. :Far to find and replace, :F to find. t and T to toggle selection. s to replace. u to undo
-                                            " :F {pattern} {file-mask}. Typically the file mask is ** for any files under the current directory recursively. * is non recursive.
+Plug 'brooth/far.vim'                       " Find and replace. <leader>ff to find, <leader>fr to replace, <leader>fd to confirm replace. Works with visual mode. File mask: ** for any files under the current directory recursively. * is non-recursive.
 Plug 'mg979/vim-visual-multi'               " Multi-cursor. Use <ctrl-n> to add selection and <Tab> to switch between cursor-mode and visual-mode.
 Plug 'prabirshrestha/vim-lsp'               " Vim language server protocal client
 Plug 'prabirshrestha/asyncomplete.vim'      " Aynsyc autocomplete
@@ -270,8 +270,10 @@ cabbrev j J
 noremap <silent> <leader>e :NERDTreeToggle<CR>
 " Minimal UI
 let NERDTreeMinimalUI = 1
-" Disable signcolumn
 augroup nerdtree
+    " Auto close nerdtree when leaving window
+    autocmd WinLeave * NERDTreeClose
+    " Disable signcolumn
     autocmd FileType nerdtree setlocal signcolumn=no modifiable
 augroup END
 
@@ -377,11 +379,6 @@ let g:vista#renderer#enable_icon = 0
 " let g:vista_icon_indent = ["▸ ", ""]
 
 
-""" Far
-" Enable undo
-let g:far#enable_undo=1
-
-
 """ Procession on startup
 let g:prosession_on_startup = 1
 
@@ -454,3 +451,18 @@ imap <expr> <Tab>   pumvisible() ? '<C-n>' : (vsnip#jumpable(1)   ? '<Plug>(vsni
 imap <expr> <S-Tab> pumvisible() ? '<C-p>' : (vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>')
 smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
 smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+
+
+" Far
+" Enable undo
+let g:far#enable_undo=1
+nnoremap <silent> <leader>ff  :Farf<cr>
+vnoremap <silent> <leader>ff  :Farf<cr>
+
+" shortcut for far.vim replace
+nnoremap <silent> <leader>fr  :Farr<cr>
+vnoremap <silent> <leader>fr  :Farr<cr>
+
+" shortcut for far.vim replace
+nnoremap <silent> <leader>fd  :Fardo<cr>
+vnoremap <silent> <leader>fd  :Fardo<cr>
