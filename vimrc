@@ -118,12 +118,11 @@ Plug 'tpope/vim-surround'                   " ds' cs' ysiw' S' (in visual mode)
 Plug 'tpope/vim-commentary'                 " Use <C-/> to comment
 Plug 'scrooloose/nerdtree'                  " <C-q> to toggle. Press m to open a menu for things like deleting a file
 Plug 'liuchengxu/vista.vim'                 " <C-\>
-Plug 'cohama/lexima.vim'
-" Plug 'sainnhe/edge'                        " Sonokai by the same author is also great
-" Plug 'sainnhe/sonokai'                        " Sonokai by the same author is also great
-Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+Plug 'cohama/lexima.vim'                    " Auto pair
+" Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+Plug 'overcache/NeoSolarized'
+Plug 'lifepillar/vim-solarized8'
 Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
-Plug 'padde/jump.vim'                       " j [path]
 Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select, <C-t> new tab. I recommend you always hold ctrl when using this.
 Plug 'romainl/vim-cool'                     " Disable highlight after search, and show #matches 
 Plug 'brooth/far.vim'                       " Find and replace. :Far to find and replace, :F to find. t and T to toggle selection. s to replace. u to undo
@@ -136,7 +135,9 @@ Plug 'tpope/vim-obsession'
 Plug 'dhruvasagar/vim-prosession'           " Session management. <leader>pc to create/load session, <leader>pd to delete session
 Plug 'gikmx/vim-ctrlposession'              " <C-s> to switch session
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'              " Snippet supports. vim-lsp supports retrieving snippet from server, and async can actually complete it. But it does not support snippet functionalities like editing two places at the same time
 Plug 'neomake/neomake'                      " Neomake! is just async make
@@ -157,18 +158,13 @@ endif
 
 """ Color scheme
 
-let g:material_terminal_italics = 1
-let g:material_theme_style = 'default'
+let g:neosolarized_italic = 1
 syntax on
-colorscheme material
-set termguicolors
+set background=dark
+colorscheme NeoSolarized
 " Disable tilde https://stackoverflow.com/questions/3813059/is-it-possible-to-not-display-a-for-blank-lines-in-vim-neovim
+set termguicolors
 highlight NonText guifg=bg
-" Fix italics in Vim: https://github.com/kaicataldo/material.vim/issues/56
-if !has('nvim')
-  let &t_ZH="\e[3m"
-  let &t_ZR="\e[23m"
-endif
 
 
 " UI settings
@@ -192,6 +188,7 @@ set completeopt=menuone,noselect  " Do not show preview window in auto complete
 set shortmess+=c   " Shut off completion messages
 set shortmess-=S   " Show number of matches in searc
 set startofline    " Change cursor location to start of line when doing things like ^U, ^D
+" set colorcolumn=80 " column marker
 
 " Sign column. See :help signcolumn
 if has('nvim') 
@@ -258,6 +255,7 @@ let g:tex_indent_items = 0
 " Note that you cannot use <c-/>. Vim send <c-/> as <c-_>
 " See this: https://stackoverflow.com/questions/90l51837/how-to-map-c-to-toggle-comments-in-vim
 noremap <silent> <c-_> :Commentary<cr><cr>
+inoremap <silent> <c-_> <c-o>:Commentary<cr>
 
 " Use jump.vim, redefine built-in 'j' as 'J'
 " https://stackoverflow.com/questions/2605036/how-to-redefine-a-command-in-vim
@@ -267,6 +265,10 @@ cabbrev j J
 noremap <silent> <leader>e :NERDTreeToggle<CR>
 " Minimal UI
 let NERDTreeMinimalUI = 1
+" Disable signcolumn
+augroup nerdtree
+    autocmd FileType nerdtree setlocal signcolumn=no modifiable
+augroup END
 
 " Vista setting
 noremap <silent> <leader>t :Vista!!<CR>
@@ -419,3 +421,17 @@ let g:airline_extensions = ['ale', 'hunks', 'ctrlp', 'branch', 'vista', 'obsessi
 let airline#extensions#ale#show_line_numbers = 0
 " let g:airline_section_y = ''
 let g:airline_section_z = '%p%% ☰ %l/%L'
+
+" See https://stackoverflow.com/questions/48304195/what-are-the-u-and-m-file-markers-in-visual-studio-code
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+                \ 'Modified'  :'M',
+                \ 'Staged'    :'A',
+                \ 'Untracked' :'U',
+                \ 'Renamed'   :'R',
+                \ 'Unmerged'  :'C',
+                \ 'Deleted'   :'D',
+                \ 'Dirty'     :'M',
+                \ 'Ignored'   :'I',
+                \ 'Clean'     :'N',
+                \ 'Unknown'   :'?',
+                \ }
