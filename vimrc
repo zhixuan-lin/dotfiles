@@ -271,8 +271,6 @@ noremap <silent> <leader>e :NERDTreeToggle<CR>
 " Minimal UI
 let NERDTreeMinimalUI = 1
 augroup nerdtree
-    " Auto close nerdtree when leaving window
-    autocmd WinLeave * NERDTreeClose
     " Disable signcolumn
     autocmd FileType nerdtree setlocal signcolumn=no modifiable
 augroup END
