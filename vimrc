@@ -137,7 +137,7 @@ Plug 'dhruvasagar/vim-prosession'           " Session management. <leader>pc to 
 Plug 'gikmx/vim-ctrlposession'              " <C-s> to switch session
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'               " next/prev hunk: ]c, [c. Preview/stage/undo: <leader>hp, <leader>hs, <leader>hu
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'              " Snippet supports. vim-lsp supports retrieving snippet from server, and async can actually complete it. But it does not support snippet functionalities like editing two places at the same time
@@ -362,10 +362,6 @@ augroup END
 """ lsp-settings
 let g:lsp_settings_filetype_python = 'jedi-language-server'
 
-""" Asyncomplete key mappings
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
 
 """ Vista settings
@@ -437,3 +433,17 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ 'Unknown'   :'?',
                 \ }
 
+
+""" Asyncomplete key mappings
+" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
+" vsnip, jump forward or backward. Note autocompletion has higher priority
+" Note you have to use imap but nor inoremap because otherwise <Plug>(...)
+" won't be remapped properly. See https://www.reddit.com/r/vim/comments/78izt4/please_help_understand_how_to_use_plug_mapping/
+" With '' instead of "" you don't need to escape `<`
+imap <expr> <Tab>   pumvisible() ? '<C-n>' : (vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)' : '<Tab>')
+imap <expr> <S-Tab> pumvisible() ? '<C-p>' : (vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>')
+smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
