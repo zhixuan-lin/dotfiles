@@ -23,6 +23,15 @@ you may need root privilege to install these programs.
 * `ripgrep`: best `grep` tool
 * `rclone`: command line tool for managing cloud files
 
+## Colors
+
+* vim: 
+    * [material](https://github.com/kaicataldo/material.vim). Use `palenight` theme) 
+    * [solarized8](https://github.com/lifepillar/vim-solarized8). Use `flat` style for statusline.
+* iterm2: 
+    * [palenight](https://github.com/JonathanSpeek/palenight-iterm2) 
+    * [solarized high contrast](https://github.com/mbadolato/iTerm2-Color-Schemes/blob/master/schemes/Solarized%20Dark%20Higher%20Contrast.itermcolors). You'd better set background color to ANSI black.
+
 ## Language servers, Linting Tools, ...
 
 ### Choices
