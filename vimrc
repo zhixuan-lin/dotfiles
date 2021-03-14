@@ -120,7 +120,7 @@ Plug 'scrooloose/nerdtree'                  " <C-q> to toggle. Press m to open a
 Plug 'liuchengxu/vista.vim'                 " <C-\>
 Plug 'cohama/lexima.vim'                    " Auto pair
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
-" Plug 'overcache/NeoSolarized'
+Plug 'lifepillar/vim-solarized8'
 Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
 Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select, <C-t> new tab. I recommend you always hold ctrl when using this.
 Plug 'romainl/vim-cool'                     " Disable highlight after search, and show #matches 
@@ -157,19 +157,27 @@ endif
 
 """ Color scheme
 
-" let g:neosolarized_italic = 1
 syntax on
 set background=dark
 let g:material_theme_style = 'palenight'
 let g:material_terminal_italics = 1
-colorscheme material
+let g:solarized_statusline = "flat"
+
+" colorscheme material
+autocmd vimenter * ++nested colorscheme solarized8
 set termguicolors
-" Disable tilde. https://github.com/neovim/neovim/issues/2067
-hi! EndOfBuffer guifg=bg
+" For material
 if !has('nvim')
   let &t_ZH="\e[3m"
   let &t_ZR="\e[23m"
 endif
+" Split bar https://stackoverflow.com/questions/9001337/vim-split-bar-styling
+" set fillchars+=vert:\ 
+autocmd vimenter * hi! VertSplit guibg=bg guifg=black
+" Disable tilde. https://github.com/neovim/neovim/issues/2067
+autocmd vimenter * hi! EndOfBuffer guifg=bg
+" LineNr, flat style
+" autocmd vimenter * hi! LineNr guibg=bg
 
 
 " UI settings
@@ -406,7 +414,7 @@ function! s:setautomake()
     if g:automake_enabled == 0
         augroup Automake
             au BufWrite *.tex if filereadable('Makefile') | Neomake! | endif
-        augroup END
+        augroup 
         let g:automake_enabled = 1
     else
         augroup! Automake
