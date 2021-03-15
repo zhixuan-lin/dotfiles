@@ -124,7 +124,7 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
 Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select, <C-t> new tab. I recommend you always hold ctrl when using this.
 Plug 'romainl/vim-cool'                     " Disable highlight after search, and show #matches 
-Plug 'brooth/far.vim'                       " Find and replace. <leader>ff to find, <leader>fr to replace, <leader>fd to confirm replace. Works with visual mode. File mask: ** for any files under the current directory recursively. * is non-recursive.
+Plug 'brooth/far.vim'                       " Find and replace. <leader>ff to find, <leader>fr to replace, t and T to toggle selection, <leader>fd to confirm replace. Works with visual mode. File mask: ** for any files under the current directory recursively. * is non-recursive.
 Plug 'mg979/vim-visual-multi'               " Multi-cursor. Use <ctrl-n> to add selection and <Tab> to switch between cursor-mode and visual-mode.
 Plug 'prabirshrestha/vim-lsp'               " Vim language server protocal client
 Plug 'prabirshrestha/asyncomplete.vim'      " Aynsyc autocomplete
