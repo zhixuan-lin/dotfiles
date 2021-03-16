@@ -14,6 +14,8 @@
     "   https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
     "
 " Quick reference
+    " vimgrep:
+    "   finds a pattern in multiple files, load it into location list.
     " Terminal
     "   Open terminal: :ter. In vim terminal opens in new split window, so :tab ter opens it in a new tab. In nvim it opens in current window, so tabe | ter helps.
     "   Enter normal mode: <C-\><C-n>. Enter terminal mode: any command that enter the insert mode.
@@ -472,3 +474,13 @@ vnoremap <silent> <leader>fr  :Farr<cr>
 " shortcut for far.vim replace
 nnoremap <silent> <leader>fd  :Fardo<cr>
 vnoremap <silent> <leader>fd  :Fardo<cr>
+
+augroup far
+    " far set the searching directory to the one at startup. Even worse 
+    " stupidly, it cd to that cwd. This fixes that.
+    autocmd DirChanged * let g:far#cwd = getcwd()
+    " Set far buffers as hidden buffers. Might be better if I can delete
+    autocmd FileType far setlocal nobuflisted
+    " Delete the buffer when the window is closed.
+    autocmd FileType far setlocal bufhidden=wipe
+augroup END
