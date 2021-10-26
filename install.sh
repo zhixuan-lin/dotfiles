@@ -1,8 +1,29 @@
+# This file
+# - copies dotfiles, backup old dotfiles
+# - installs oh-my-zsh
+# - changes default shell to zsh
+
 # Some functions are from https://github.com/lewagon/dotfiles/blob/master/install.sh
 
 # Make backup folders
 BACKUP="$HOME/.dotfiles_backup"
 DOTFILES="tmux.conf zshrc vimrc"
+
+# Check git, zsh, python are installed
+if ! type "git" > /dev/null; then
+    echo "Please install git first"
+    exit
+fi
+
+if ! type "zsh" > /dev/null; then
+    echo "Please install zsh first"
+    exit
+fi
+
+if ! type "python" > /dev/null; then
+    echo "Please install python first"
+    exit
+fi
 
 # Function for backup files
 backup() {
@@ -19,40 +40,9 @@ backup() {
   fi
 }
 
-# Check git is installed
-if ! type "git" > /dev/null; then
-    echo "Please install git first"
-    exit
-fi
-
-# Check zsh is installed
-if ! type "zsh" > /dev/null; then
-  # Try to install zsh
-  echo "Trying to install zsh..."
-  if [ `uname` = "Darwin" ]; then
-      brew install zsh || exit 1
-  elif [ `uname` = 'Linux' ]; then
-      sudo apt-get install zsh || exit 1
-  else
-      echo "Unknown system `uname`. Please install zsh manually"; exit 1
-  fi
-fi
 
 # Install oh-my-zsh if it is not installed
 [ ! -e ~/.oh-my-zsh ] && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) " "" --unattended --skip-chsh
-
-# Install python
-if ! type "python" > /dev/null; then
-  # Try to install python
-  echo "Trying to install python..."
-  if [ `uname` = "Darwin" ]; then
-      brew install python || exit 1
-  elif [ `uname` = 'Linux' ]; then
-      sudo apt-get install python || exit 1
-  else
-      echo "Unknown system `uname`. Please install python manually"; exit 1
-  fi
-fi
 
 
 for name in $DOTFILES; do

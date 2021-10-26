@@ -14,6 +14,7 @@
     "   https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
     "
 " Quick reference
+    " Delete character before cursor: X
     " vimgrep:
     "   finds a pattern in multiple files, load it into location list.
     " Terminal
@@ -179,7 +180,7 @@ autocmd vimenter * hi! VertSplit guibg=bg guifg=black
 " Disable tilde. https://github.com/neovim/neovim/issues/2067
 autocmd vimenter * hi! EndOfBuffer guifg=bg
 " LineNr, flat style
-" autocmd vimenter * hi! LineNr guibg=bg
+autocmd vimenter * hi! LineNr guibg=bg
 
 
 " UI settings
@@ -318,9 +319,9 @@ nmap <silent> <C-j> <Plug>(ale_next_wrap_error)
 let g:ale_echo_msg_format = '[%linter%] %s'
 let g:ale_sign_warning = '!!'
 " Show error in virtual text
-" let g:ale_virtualtext_cursor = 0
+" let g:ale_virtualtext_cursor = 1
 " let g:ale_echo_cursor = 0
-let g:ale_set_balloons = 0
+" let g:ale_set_balloons = 0
 " let g:ale_set_highlights = 1
 let g:ale_linters = {
 \   'python': ['flake8', 'pylint']
