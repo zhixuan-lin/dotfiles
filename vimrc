@@ -176,7 +176,7 @@ autocmd vimenter * hi! VertSplit guibg=bg guifg=black
 " Disable tilde. https://github.com/neovim/neovim/issues/2067
 autocmd vimenter * hi! EndOfBuffer guifg=bg
 " LineNr, flat style
-autocmd vimenter * hi! LineNr guibg=bg
+" autocmd vimenter * hi! LineNr guibg=bg
 
 
 " UI settings
