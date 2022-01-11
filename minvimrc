@@ -2,9 +2,10 @@
 " syntax on | filetype indent plugin on | set nu rnu et ts=4 sw=0
 "
 " Use `vim -u minvimrc -N`  to use this vimrc
-" A truly minimal vimrc without any plugins or keymaps while working well.
-" This is what you should write from memory within 30 seconds when you are using vim in a new server.
+" A minimal vimrc without any plugins 
 " Remember the smart things that you can do with raw vim:
+"     file explorer toggle: :20Le
+"     autocomplete: <C-N> or <C-P>
 "     use :mksession/:msk and vim -S to maintain sessions
 "     :e to edit file. :e and then press <C-d> lists files in the directory
 "     :b {bufname} to open a buffer. :tab sb to open a buffer in a new tab
@@ -16,14 +17,27 @@
 "     use macros. Record: q{c} Apply: @{c} Repeat: @@
 "     use gd, c-], c-t, c-i, c-o for jumping around
 
-" Essential
+" Essential, truly minimal
+" This is what you should write from memory within 30 seconds when you are using vim in a new server.
 syntax on                        " Syntax highlighting
 filetype indent plugin on        " Enable detecting file types
 set nu rnu et ts=4 sw=0          " line numbers, relative line number, expandtab, tabstop, shiftwidth. 
 
 
-" Optional
+" Optional, but very useful
 set nowrap                       " Do not wrap lines
 set clipboard=unnamed            " Clipboard
 set mouse+=a                     " Mouse support
 
+let mapleader = ","
+" netrw '-' go up, 'gh' show hidden files, 'gn' change root
+" '%' and 'D' create and delete file, 'd' create new directory
+" 'c' change current directory
+noremap <silent> <leader>e :Le<CR>
+let g:netrw_winsize = -30           " minus: use absolute value
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3           " use tree
+" hide hidden files by default
+let ghregex='\(^\|\s\s\)\zs\.\S\+'
+let g:netrw_hide = 1             
+et g:netrw_list_hide=ghregex

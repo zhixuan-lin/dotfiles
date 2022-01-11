@@ -18,10 +18,11 @@ you may need root privilege to install these programs.
 * `autojump`: jump to recently visited locations
 * `nnn`: interactive terminal navigator. Supports cd on quit with `<ctrl+g>`
 * `htop`: interactive top
-* `fzf`: fuzzy file finder
+* `fzf`: fuzzy file finder, and improves command line reverse search.
 * `gpustat`: monitor gpu usage. Way better than `nvidia-smi`
 * `ripgrep`: best `grep` tool
 * `rclone`: command line tool for managing cloud files
+* `psync`: `rsync` project files with a configuration file
 
 ## Colors
 

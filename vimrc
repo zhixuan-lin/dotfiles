@@ -14,6 +14,7 @@
     "   https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
     "
 " Quick reference
+    " Start vim with read-only mode: use view
     " Delete character before cursor: X
     " vimgrep:
     "   finds a pattern in multiple files, load it into location list.
@@ -114,20 +115,17 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " Declare the list of plugins.
-Plug 'tpope/vim-fugitive'                   " Git
 Plug 'psliwka/vim-smoothie'                 " Smooth scroll
 Plug 'godlygeek/tabular'                    " Align texts. Command to align python comments: Tabularize /#
 Plug 'tpope/vim-surround'                   " ds' cs' ysiw' S' (in visual mode)
 Plug 'tpope/vim-commentary'                 " Use <C-/> to comment
-Plug 'scrooloose/nerdtree'                  " <C-q> to toggle. Press m to open a menu for things like deleting a file
+Plug 'scrooloose/nerdtree'                  " <C-q> to toggle. 'R' to refresh. Press m to open a menu for things like deleting a file
 Plug 'liuchengxu/vista.vim'                 " <C-\>
 Plug 'cohama/lexima.vim'                    " Auto pair
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'lifepillar/vim-solarized8'
 Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
 Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select, <C-t> new tab. I recommend you always hold ctrl when using this.
-Plug 'romainl/vim-cool'                     " Disable highlight after search, and show #matches 
-Plug 'brooth/far.vim'                       " Find and replace. <leader>ff to find, <leader>fr to replace, t and T to toggle selection, <leader>fd to confirm replace. Works with visual mode. File mask: ** for any files under the current directory recursively. * is non-recursive.
 Plug 'mg979/vim-visual-multi'               " Multi-cursor. Use <ctrl-n> to add selection and <Tab> to switch between cursor-mode and visual-mode.
 Plug 'prabirshrestha/vim-lsp'               " Vim language server protocal client
 Plug 'prabirshrestha/asyncomplete.vim'      " Aynsyc autocomplete
@@ -140,9 +138,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'               " next/prev hunk: ]c, [c. Preview/stage/undo: <leader>hp, <leader>hs, <leader>hu
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/vim-vsnip-integ'              " Snippet supports. vim-lsp supports retrieving snippet from server, and async can actually complete it. But it does not support snippet functionalities like editing two places at the same time
-Plug 'neomake/neomake'                      " Neomake! is just async make
 Plug 'dense-analysis/ale'                   " :lopen and :lclose displays error list. <C-j>, <C-k> navigates between errors.
                                             " Fix with :ALEFix
                                             " You would need to install flake8 and yapf via pip
@@ -168,6 +163,7 @@ let g:solarized_statusline = "flat"
 
 " colorscheme material
 autocmd vimenter * ++nested colorscheme solarized8
+" autocmd vimenter * ++nested colorscheme solarized8_high
 set termguicolors
 " For material
 if !has('nvim')
@@ -204,7 +200,7 @@ set completeopt=menuone,noselect  " Do not show preview window in auto complete
 set shortmess+=c   " Shut off completion messages
 set shortmess-=S   " Show number of matches in searc
 set startofline    " Change cursor location to start of line when doing things like ^U, ^D
-" set colorcolumn=80 " column marker
+set colorcolumn=80 " column marker
 
 " Sign column. See :help signcolumn
 if has('nvim') 
@@ -308,9 +304,6 @@ let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 autocmd Filetype vim let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'", '`':'`'}
 
 
-" Mucomplete. Turn this on if you need synchronous complete.
-" let g:mucomplete#enable_auto_at_startup = 0
-
 
 " ALE, linter
 nmap <silent> <C-k> <Plug>(ale_previous_wrap_error)
@@ -319,7 +312,7 @@ nmap <silent> <C-j> <Plug>(ale_next_wrap_error)
 let g:ale_echo_msg_format = '[%linter%] %s'
 let g:ale_sign_warning = '!!'
 " Show error in virtual text
-" let g:ale_virtualtext_cursor = 1
+let g:ale_virtualtext_cursor = 0
 " let g:ale_echo_cursor = 0
 " let g:ale_set_balloons = 0
 " let g:ale_set_highlights = 1
@@ -412,20 +405,6 @@ let g:ctrlp_cmd = 'CtrlP'
 " let g:ctrlp_cmd = 'CtrlPMixed'
 
 
-let g:automake_enabled = 0
-function! s:setautomake()
-    if g:automake_enabled == 0
-        augroup Automake
-            au BufWrite *.tex if filereadable('Makefile') | Neomake! | endif
-        augroup 
-        let g:automake_enabled = 1
-    else
-        augroup! Automake
-        let g:automake_enabled = 0
-    endif
-endfunction
-
-command! AutomakeToggle call s:setautomake()
 
 let g:airline_extensions = ['ale', 'hunks', 'ctrlp', 'branch', 'vista', 'obsession']
 let airline#extensions#ale#show_line_numbers = 0
@@ -448,40 +427,6 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
 
 
 """ Asyncomplete key mappings
-" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
-
-" vsnip, jump forward or backward. Note autocompletion has higher priority
-" Note you have to use imap but nor inoremap because otherwise <Plug>(...)
-" won't be remapped properly. See https://www.reddit.com/r/vim/comments/78izt4/please_help_understand_how_to_use_plug_mapping/
-" With '' instead of "" you don't need to escape `<`
-imap <expr> <Tab>   pumvisible() ? '<C-n>' : (vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)' : '<Tab>')
-imap <expr> <S-Tab> pumvisible() ? '<C-p>' : (vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>')
-smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-
-
-" Far
-" Enable undo
-let g:far#enable_undo=1
-nnoremap <silent> <leader>ff  :Farf<cr>
-vnoremap <silent> <leader>ff  :Farf<cr>
-
-" shortcut for far.vim replace
-nnoremap <silent> <leader>fr  :Farr<cr>
-vnoremap <silent> <leader>fr  :Farr<cr>
-
-" shortcut for far.vim replace
-nnoremap <silent> <leader>fd  :Fardo<cr>
-vnoremap <silent> <leader>fd  :Fardo<cr>
-
-augroup far
-    " far set the searching directory to the one at startup. Even worse 
-    " stupidly, it cd to that cwd. This fixes that.
-    autocmd DirChanged * let g:far#cwd = getcwd()
-    " Set far buffers as hidden buffers. Might be better if I can delete
-    autocmd FileType far setlocal nobuflisted
-    " Delete the buffer when the window is closed.
-    autocmd FileType far setlocal bufhidden=wipe
-augroup END
