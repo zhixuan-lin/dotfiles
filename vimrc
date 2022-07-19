@@ -25,8 +25,11 @@
     "   all files. **.py, as mention above, is not seen as ** wildcase. It is
     "   almost equivalent to *.py
     " Register
-    "   Paste last yank: "0p. By default it pastes from the unnamed register
-    "   "". However, deleted content also goes to "". That's why.
+    "   Paste last yank: "0p. 
+    "   Paste last delete: "1p 
+    "   If nothing specified, by default it pastes from the unnamed register "",
+    "   which is either the last yank or last delete, whichever is more
+    "   recent.
     "   See https://www.brianstorti.com/vim-registers/
     " Terminal
     "   Open terminal: :ter. In vim terminal opens in new split window, so :tab ter opens it in a new tab. In nvim it opens in current window, so tabe | ter helps.
