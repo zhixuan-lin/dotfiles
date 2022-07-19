@@ -23,6 +23,7 @@ you may need root privilege to install these programs.
 * `ripgrep`: best `grep` tool
 * `rclone`: command line tool for managing cloud files
 * `psync`: `rsync` project files with a configuration file
+* `git difftool --tool=vimdiff`
 
 ## Colors
 
@@ -70,9 +71,8 @@ Recommended flake8 plugins:
 
 ```bash
 pip install flake8-unused-arguments
-pip install flake8-docstrings
 pip install flake8-todo
-pip install pep8-naming
+pip install flake8-multiline-containers
 ```
 
 ### Project Root, Import Paths...

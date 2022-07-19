@@ -16,8 +16,18 @@
 " Quick reference
     " Start vim with read-only mode: use view
     " Delete character before cursor: X
-    " vimgrep:
-    "   finds a pattern in multiple files, load it into location list.
+    " vimgrep Usage:
+    "   vim[grep] somepattern {file}. Then use :cw to open the error list.  Path starts from cwd
+    "   - *: any file, not recursively
+    "   - **: any number of directories, recursively. NOTE: either at the end of 
+    "   file pattern or followed by /. If followed by anything else it is just like two *.
+    "   - **/*.py: what you will typcally use. ** without anything else search
+    "   all files. **.py, as mention above, is not seen as ** wildcase. It is
+    "   almost equivalent to *.py
+    " Register
+    "   Paste last yank: "0p. By default it pastes from the unnamed register
+    "   "". However, deleted content also goes to "". That's why.
+    "   See https://www.brianstorti.com/vim-registers/
     " Terminal
     "   Open terminal: :ter. In vim terminal opens in new split window, so :tab ter opens it in a new tab. In nvim it opens in current window, so tabe | ter helps.
     "   Enter normal mode: <C-\><C-n>. Enter terminal mode: any command that enter the insert mode.
@@ -201,7 +211,9 @@ set shortmess+=c   " Shut off completion messages
 set shortmess-=S   " Show number of matches in searc
 set startofline    " Change cursor location to start of line when doing things like ^U, ^D
 set colorcolumn=80 " column marker
-
+set nofoldenable
+set exrc           " project-specific vimrc
+set secure         " project-specific vimrc
 " Sign column. See :help signcolumn
 if has('nvim') 
     set signcolumn=yes:2
@@ -308,11 +320,11 @@ autocmd Filetype vim let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'", '`':'
 " ALE, linter
 nmap <silent> <C-k> <Plug>(ale_previous_wrap_error)
 nmap <silent> <C-j> <Plug>(ale_next_wrap_error)
-" let g:ale_echo_msg_format = '[%linter%][%code%] %s'
-let g:ale_echo_msg_format = '[%linter%] %s'
+let g:ale_echo_msg_format = '[%linter%][%code%] %s'
+" let g:ale_echo_msg_format = '[%linter%] %s'
 let g:ale_sign_warning = '!!'
 " Show error in virtual text
-let g:ale_virtualtext_cursor = 0
+let g:ale_virtualtext_cursor = 1
 " let g:ale_echo_cursor = 0
 " let g:ale_set_balloons = 0
 " let g:ale_set_highlights = 1
@@ -376,7 +388,7 @@ let g:lsp_settings_filetype_python = 'jedi-language-server'
 
 
 """ Vista settings
-let g:vista_default_executive = 'vim_lsp'
+let g:vista_default_executive = 'ctags'
 let g:vista#renderer#enable_icon = 0
 " let g:vista_icon_indent = ["▸ ", ""]
 
