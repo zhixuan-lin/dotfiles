@@ -96,8 +96,6 @@
     "   J
     " vim-surround
     "   ysiw, ds", cs", S" (in visual mode)
-    " Fix indentation:
-    "   ={motion}
     " Marker
     "   Mark: m{c} Go back: `{c}
     " Macro
@@ -151,6 +149,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'               " next/prev hunk: ]c, [c. Preview/stage/undo: <leader>hp, <leader>hs, <leader>hu
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'google/vim-searchindex'               " when searching, show any amount of matches
 Plug 'dense-analysis/ale'                   " :lopen and :lclose displays error list. <C-j>, <C-k> navigates between errors.
                                             " Fix with :ALEFix
                                             " You would need to install flake8 and yapf via pip
@@ -169,7 +168,7 @@ endif
 """ Color scheme
 
 syntax on
-set background=dark
+set background=light
 let g:material_theme_style = 'palenight'
 let g:material_terminal_italics = 1
 let g:solarized_statusline = "flat"
@@ -418,6 +417,9 @@ let g:python_highlight_space_errors = 0
 " Maybe you don't need mixed. Get used to use :b {bufname} to go to file
 let g:ctrlp_cmd = 'CtrlP'
 " let g:ctrlp_cmd = 'CtrlPMixed'
+if executable('rg')
+  let g:ctrlp_user_command = 'rg %s --files'
+endif
 
 
 
@@ -445,3 +447,6 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
+""" Gin highlighting
+au BufRead,BufNewFile *.gin set filetype=python
