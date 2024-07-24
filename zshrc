@@ -119,9 +119,13 @@ export TERM=xterm-256color
 
 # autojump configuration
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+# For M series Mac, where autojump is installed via brew
+[ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
 
 # fzf support
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
 
 
 # locale setting
@@ -135,14 +139,14 @@ export PATH="$HOME/anaconda3/bin:$PATH"  # commented out by conda initialize
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOME/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/Users/lin/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "/Users/lin/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/lin/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="$HOME/anaconda3/bin:$PATH"
+        export PATH="/Users/lin/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
@@ -153,9 +157,9 @@ unset __conda_setup
     # https://github.com/ohmyzsh/ohmyzsh/blob/master/themes/sorin.zsh-theme
     # conda environment prompt setting
     # https://stackoverflow.com/questions/49262314/add-conda-environment-info-to-terminal-prompt
-if type "conda" > /dev/null; then
-    conda config --set changeps1 false
-fi
+# if type "conda" > /dev/null; then
+    # conda config --set changeps1 false
+# fi
 
 if [ $ZSH_THEME = "robbyrussell" ]; then
     RPROMPT='%B$CONDA_DEFAULT_ENV'

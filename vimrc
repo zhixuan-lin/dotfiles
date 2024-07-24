@@ -133,8 +133,7 @@ Plug 'tpope/vim-commentary'                 " Use <C-/> to comment
 Plug 'scrooloose/nerdtree'                  " <C-q> to toggle. 'R' to refresh. Press m to open a menu for things like deleting a file
 Plug 'liuchengxu/vista.vim'                 " <C-\>
 Plug 'cohama/lexima.vim'                    " Auto pair
-Plug 'kaicataldo/material.vim', { 'branch': 'main' }
-Plug 'lifepillar/vim-solarized8'
+Plug 'tomasr/molokai'
 Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
 Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select, <C-t> new tab. I recommend you always hold ctrl when using this.
 Plug 'mg979/vim-visual-multi'               " Multi-cursor. Use <ctrl-n> to add selection and <Tab> to switch between cursor-mode and visual-mode.
@@ -169,22 +168,13 @@ endif
 """ Color scheme
 
 syntax on
-set background=light
-let g:material_theme_style = 'palenight'
-let g:material_terminal_italics = 1
-let g:solarized_statusline = "flat"
+set background=dark
 
-" colorscheme material
-autocmd vimenter * ++nested colorscheme solarized8
-" autocmd vimenter * ++nested colorscheme solarized8_high
+colorscheme molokai
 set termguicolors
-" For material
-if !has('nvim')
-  let &t_ZH="\e[3m"
-  let &t_ZR="\e[23m"
-endif
+
 " Split bar https://stackoverflow.com/questions/9001337/vim-split-bar-styling
-" set fillchars+=vert:\ 
+set fillchars+=vert:\ 
 autocmd vimenter * hi! VertSplit guibg=bg guifg=black
 " Disable tilde. https://github.com/neovim/neovim/issues/2067
 autocmd vimenter * hi! EndOfBuffer guifg=bg
@@ -241,10 +231,19 @@ set ignorecase " Case insensitive search
 set smartcase  " If search entry contains a capital, then it becomes case sensitive
 
 " Undo
-set undofile " Maintain undo history between sessions
-set undodir=~/.vim/undodir " To use this function, you must manually create this directory
-if exists("*mkdir") && !isdirectory(expand("~/.vim/undodir"))
-    call mkdir(expand("~/.vim/undodir"), "p")
+" https://vi.stackexchange.com/questions/6/how-can-i-use-the-undofile
+if has('nvim') 
+    set undofile " Maintain undo history between sessions
+    set undodir=~/.vim/nvim_undodir " To use this function, you must manually create this directory
+    if exists("*mkdir") && !isdirectory(expand("~/.vim/nvim_undodir"))
+        call mkdir(expand("~/.vim/nvim_undodir"), "p")
+    endif
+else
+    set undofile " Maintain undo history between sessions
+    set undodir=~/.vim/undodir " To use this function, you must manually create this directory
+    if exists("*mkdir") && !isdirectory(expand("~/.vim/undodir"))
+        call mkdir(expand("~/.vim/undodir"), "p")
+    endif
 endif
 
 " Do not show line numbers in terminal mode in nvim.
@@ -279,8 +278,9 @@ end
 let g:tex_indent_items = 0
 
 " Vim commentary
-" Note that you cannot use <c-/>. Vim send <c-/> as <c-_>
-" See this: https://stackoverflow.com/questions/90l51837/how-to-map-c-to-toggle-comments-in-vim
+" Note that you cannot use <c-/> because this is not a ASCII char. 
+" To make this work, you should bind <c-/> to <c-_> (hex code 0x1f) in Iterm2.
+" See this: https://stackoverflow.com/questions/9051837/how-to-map-c-to-toggle-comments-in-vim
 noremap <silent> <c-_> :Commentary<cr><cr>
 inoremap <silent> <c-_> <c-o>:Commentary<cr>
 
@@ -327,7 +327,7 @@ let g:ale_echo_msg_format = '[%linter%][%code%] %s'
 " let g:ale_echo_msg_format = '[%linter%] %s'
 let g:ale_sign_warning = '!!'
 " Show error in virtual text
-let g:ale_virtualtext_cursor = 1
+let g:ale_virtualtext_cursor = 0
 " let g:ale_echo_cursor = 0
 " let g:ale_set_balloons = 0
 " let g:ale_set_highlights = 1

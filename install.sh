@@ -20,10 +20,10 @@ if ! type "zsh" > /dev/null; then
     exit
 fi
 
-if ! type "python" > /dev/null; then
-    echo "Please install python first"
-    exit
-fi
+# if ! type "python" > /dev/null; then
+#     echo "Please install python first"
+#     exit
+# fi
 
 # Function for backup files
 backup() {
@@ -57,13 +57,13 @@ done
 
 # If autojump is not installed, install it. 
 # See https://stackoverflow.com/questions/7522712/how-can-i-check-if-a-command-exists-in-a-shell-script
-if ! type "autojump" > /dev/null; then
-    git clone git://github.com/wting/autojump.git
-    cd autojump
-    ./install.py 
-    cd -
-    rm -rf autojump
-fi
+# if ! type "autojump" > /dev/null; then
+#     git clone git://github.com/wting/autojump.git
+#     cd autojump
+#     ./install.py 
+#     cd -
+#     rm -rf autojump
+# fi
 
 
 # Colors: https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
@@ -76,6 +76,7 @@ if [ "$(basename "$SHELL")" = "zsh" ]; then
     # Reload tmux configuration if some tmux is running.
     echo "Done. You may need to run '${RED}source reload.sh${NC}' to reload settings."
 else
+    echo "changing default shell to zsh"
     if ! chsh -s "$(which zsh)"; then
         echo "chsh command unsuccessful. Change your shell manually"
     else
