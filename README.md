@@ -25,6 +25,11 @@ you may need root privilege to install these programs.
 * `psync`: `rsync` project files with a configuration file
 * `git difftool --tool=vimdiff`
 
+## Iterm2 setup
+
+* `Settings -> Profiles -> Keys -> General`, set left option key to be `Esc +`
+* `Settings -> Profiles -> Keys -> Key Mapping`, make `^/` send `0x1f`. This is used for commenting. 
+
 ## Colors
 
 * vim: [molokai](https://github.com/tomasr/molokai)
