@@ -1,5 +1,6 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/.local/bin:$HOME/bin:/usr/local/bin:/usr/bin:$PATH
+# homebrew path is added in .zprofile
+export PATH=$HOME/.local/bin:/usr/local/bin:$PATH:$HOME/bin:/usr/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -134,9 +135,6 @@ export LANG=en_US.UTF-8
 
 
 
-# added by Anaconda3 5.2.0 installer
-export PATH="$HOME/anaconda3/bin:$PATH"  # commented out by conda initialize
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/Users/lin/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -167,3 +165,35 @@ fi
 if [ $ZSH_THEME = "refined" ]; then
     RPROMPT='%B$CONDA_DEFAULT_ENV'
 fi
+
+# CD on quit for nnn  https://github.com/jarun/nnn/wiki/Basic-use-cases#configure-cd-on-quit
+n ()
+{
+    # Block nesting of nnn in subshells
+    [ "${NNNLVL:-0}" -eq 0 ] || {
+        echo "nnn is already running"
+        return
+    }
+
+    # The behaviour is set to cd on quit (nnn checks if NNN_TMPFILE is set)
+    # If NNN_TMPFILE is set to a custom path, it must be exported for nnn to
+    # see. To cd on quit only on ^G, remove the "export" and make sure not to
+    # use a custom path, i.e. set NNN_TMPFILE *exactly* as follows:
+    #      NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+
+    # Unmask ^Q (, ^V etc.) (if required, see `stty -a`) to Quit nnn
+    # stty start undef
+    # stty stop undef
+    # stty lwrap undef
+    # stty lnext undef
+
+    # The command builtin allows one to alias nnn to n, if desired, without
+    # making an infinitely recursive alias
+    command nnn "$@"
+
+    [ ! -f "$NNN_TMPFILE" ] || {
+        . "$NNN_TMPFILE"
+        rm -f -- "$NNN_TMPFILE" > /dev/null
+    }
+}

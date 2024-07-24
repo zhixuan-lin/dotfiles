@@ -22,7 +22,7 @@ you may need root privilege to install these programs.
 * `gpustat`: monitor gpu usage. Way better than `nvidia-smi`
 * `ripgrep`: best `grep` tool
 * `rclone`: command line tool for managing cloud files
-* `psync`: `rsync` project files with a configuration file
+* [`psync`](https://github.com/lazywei/psync): `rsync` project files with a configuration file
 * `git difftool --tool=vimdiff`
 
 ## Iterm2 setup
