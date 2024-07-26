@@ -12,6 +12,24 @@ All configurations are light so that they work on new machines.
 However, if you don't have some basic programs like `zsh`, `git`, `python` `curl` installed, 
 you may need root privilege to install these programs.
 
+## Proxy
+
+Copy the following to `~/.local/bin/proxy`:
+
+```
+#!/bin/bash
+export http_proxy=http://127.0.0.1:1087
+export https_proxy=http://127.0.0.1:1087
+$@
+```
+
+Then
+
+```bash
+chmod u+x ~/.local/bin/proxy
+```
+
+
 ## Recommended tools
 
 * `tldr`: quickly figure out the usage of most commands
@@ -22,7 +40,7 @@ you may need root privilege to install these programs.
 * `gpustat`: monitor gpu usage. Way better than `nvidia-smi`
 * `ripgrep`: best `grep` tool
 * `rclone`: command line tool for managing cloud files
-* [`psync`](https://github.com/lazywei/psync): `rsync` project files with a configuration file
+* [`psync`](https://github.com/lazywei/psync): `rsync` project files with a configuration file. If you see yaml issues you can directly modify the source file.
 * `git difftool --tool=vimdiff`
 
 ## Iterm2 setup

@@ -131,7 +131,7 @@ Plug 'godlygeek/tabular'                    " Align texts. Command to align pyth
 Plug 'tpope/vim-surround'                   " ds' cs' ysiw' S' (in visual mode)
 Plug 'tpope/vim-commentary'                 " Use <C-/> to comment
 Plug 'scrooloose/nerdtree'                  " <C-q> to toggle. 'R' to refresh. Press m to open a menu for things like deleting a file
-Plug 'liuchengxu/vista.vim'                 " <C-\>
+Plug 'preservim/tagbar'                 " <C-\>
 Plug 'cohama/lexima.vim'                    " Auto pair
 Plug 'tomasr/molokai'
 Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
@@ -297,8 +297,8 @@ augroup nerdtree
     autocmd FileType nerdtree setlocal signcolumn=no modifiable
 augroup END
 
-" Vista setting
-noremap <silent> <leader>t :Vista!!<CR>
+" Tagbar setting
+noremap <silent> <leader>t :TagbarToggle<CR>
 
 """ Prosession map. See https://stackoverflow.com/questions/45993666/vim-send-tab-keystroke-in-keymapping
 set wildcharm=<C-z>
@@ -342,6 +342,8 @@ let g:ale_type_map = {'flake8': {'ES': 'WS'}}
 " For pylint only report errors. Style issues are handled with flake8. Pylint
 " catches many errors that flake8 cannot catch.
 let g:ale_python_pylint_options = '--disable=all --enable=E,F'
+" Ignore line too long
+let g:ale_python_flake8_options = '--ignore E501'
 
 
 
