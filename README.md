@@ -43,6 +43,14 @@ chmod u+x ~/.local/bin/proxy
 * [`psync`](https://github.com/lazywei/psync): `rsync` project files with a configuration file. If you see yaml issues you can directly modify the source file.
 * `git difftool --tool=vimdiff`
 
+## Backup
+
+* rsync semantics with slash: https://stackoverflow.com/a/31278462 
+  * Basically only slash at the end of src has a major effect. For the destination, it makes a difference only when the (1) src is a file (2) dst is non-existent
+
+* rsync delete related: https://superuser.com/a/1513723
+
+
 ## Iterm2 setup
 
 * `Settings -> Profiles -> Keys -> General`, set left option key to be `Esc +`
