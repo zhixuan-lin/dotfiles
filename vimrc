@@ -16,6 +16,11 @@
 " Quick reference
     " Start vim with read-only mode: use view
     " Delete character before cursor: X
+    " Incredibly useful: `q:` and `q/`. See help for these
+    " - Find and replace: :%s/tofind/toreplace/gc
+    "     - %: search all file. You can also visual select then just :s/tofind/toreplace/gc
+    "     - g: find each occurence within each line. Otherwise only first occurence
+    "     - c: ask for confirmation for each find
     " vimgrep Usage:
     "   vim[grep] somepattern {file}. Then use :cw to open the error list.  Path starts from cwd
     "   - *: any file, not recursively
