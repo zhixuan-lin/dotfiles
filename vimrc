@@ -398,8 +398,8 @@ let g:lsp_settings_filetype_python = 'jedi-language-server'
 
 
 """ Vista settings
-let g:vista_default_executive = 'ctags'
-let g:vista#renderer#enable_icon = 0
+" let g:vista_default_executive = 'ctags'
+" let g:vista#renderer#enable_icon = 0
 " let g:vista_icon_indent = ["▸ ", ""]
 
 
@@ -434,7 +434,7 @@ endif
 
 
 
-let g:airline_extensions = ['ale', 'hunks', 'ctrlp', 'branch', 'vista', 'obsession']
+let g:airline_extensions = ['ale', 'hunks', 'ctrlp', 'branch', 'obsession']
 let airline#extensions#ale#show_line_numbers = 0
 " let g:airline_section_y = ''
 let g:airline_section_z = '%p%% ☰ %l/%L'
