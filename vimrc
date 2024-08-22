@@ -230,20 +230,25 @@ set startofline    " Change cursor location to start of line when doing things l
 set colorcolumn=80 " column marker
 set textwidth=80   " Autowrap at 80. This is also used by `gq` and `gw`
 " - See `help fo-table`
-" - `t`: autowrap text. 
+" - `t`: autowrap text
 " - `r`: autowrap comments
 " - `q`: allow comment autowrap with `gw` and `gw`
 " - `j`: handle comment when joining lines
-" - `r` and `o`: add leader comment when new line or `o`
-" - `n`: recognize lists. See `help formatlistpat`
+" - `r` and `o`: add comment leader when new line or `o`
 " - `tcqj` is the default
-" - For python, `-` is also seen as comment. See `set comments` and 
-"   `help format-comments`. Then `r` and `o` would be incredibly helpful when 
-"   writing doc strings with `-`.
+" - There are three types of comments. One of them is useful for lists etc. For
+"   example, For python, `-` is also seen as comment. See `set comments` and
+"   `help format-comments`. 
 " - We don't use `t` by default because it can easily mess things up in regular
 "   code. But in markdown it is actually desirable.
-set formatoptions=cqjron 
-autocmd FileType markdown setlocal formatoptions=tcqjron
+set formatoptions=cqjro
+" For markdown we use `t`. Also note we view lists as the right type of
+" comment. This is way better than vim-polyglot (which uses vim-markdown)'s
+" default of comments=b:>,b:*,b:-,b:+, which does not work well with `r` and `o`.
+" 
+" On the other hand, we don't rely on `formatlistpat` (and `n`) to handle lists.
+" Setting comments seems to work way better with `r` and `o`
+autocmd FileType markdown setlocal formatoptions=tcqjro comments=b:>,fb:*,fb:-,fb:+
 " Make gq use black for Python files if available
 if executable('black')
     autocmd FileType python setlocal formatprg=black\ -q\ -
@@ -352,7 +357,7 @@ noremap <leader>pd :ProsessionDelete <C-z>
 " vim-markdown, which seems to be used in vim-polyglot
 " Setting this to 1 will have `comments` includes bullet points, which can mess
 " things up big time. See https://github.com/preservim/vim-markdown/issues/126
-let g:vim_markdown_auto_insert_bullets=0
+" let g:vim_markdown_auto_insert_bullets=0
 
 " markdown syntax highlighting
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
