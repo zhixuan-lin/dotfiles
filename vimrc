@@ -14,15 +14,34 @@
     "   https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
     "
 " Quick reference
+    " Formatting code (basically, auto wrap): 
+    " - The main difference between `gq` and `gw`: `gq` uses `formatprg` which
+    "   is customizable. So the recommandation is
+    "   - If you intend to format code (e.g., using black), use `gq`
+    "   - If you intend to autowrap code, use `gw`
+    " - where to wrap depends on `textwidth` (see `set textwidth?`)
+    " - `gqq`: formmating current line
+    " - `{Visual}gq`: format selected block
+    " - `gq{motion}`: format the lines across motion 
+    " - `gqap`: format entire paragraph
     " Start vim with read-only mode: use view
     " Delete character before cursor: X
-    " Incredibly useful: `q:` and `q/`. See help for these
-    " - Find and replace: :%s/tofind/toreplace/gc
+    " Incredibly useful: `q:` and `q/`. 
+    "   - These allow you to open command/search history in a buffer, which
+    "   you can edit. And after you are happy with them you can just <CR> to
+    "   execute them
+    "   - Alternatively, after you have typed `:` or `/`, you can do `<ctrl-f>` for the same effect.
+    " Search and replace in the current folder: https://vi.stackexchange.com/questions/2776/vim-search-replace-all-files-in-current-project-folder
+    "   - `args **/*.py`: this populates the arg list. You can view the arg list with `args`
+    "   - `argdo %/to_search/to_replace/gce | update`: here `e` skips the "pattern not found" error
+    " Find and replace: :%s/tofind/toreplace/gc
     "     - %: search all file. You can also visual select then just :s/tofind/toreplace/gc
     "     - g: find each occurence within each line. Otherwise only first occurence
     "     - c: ask for confirmation for each find
     " vimgrep Usage:
+    "   Example: vim hello **/*.py
     "   vim[grep] somepattern {file}. Then use :cw to open the error list.  Path starts from cwd
+    "   - %: current file
     "   - *: any file, not recursively
     "   - **: any number of directories, recursively. NOTE: either at the end of 
     "   file pattern or followed by /. If followed by anything else it is just like two *.
@@ -138,7 +157,7 @@ Plug 'tpope/vim-commentary'                 " Use <C-/> to comment
 Plug 'scrooloose/nerdtree'                  " <C-q> to toggle. 'R' to refresh. Press m to open a menu for things like deleting a file
 Plug 'preservim/tagbar'                 " <C-\>
 Plug 'cohama/lexima.vim'                    " Auto pair
-Plug 'tomasr/molokai'
+Plug 'tomasr/molokai'                       " colorscheme
 Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
 Plug 'ctrlpvim/ctrlp.vim'                   " <C-p>, <C-jkhl> to select, <C-t> new tab. I recommend you always hold ctrl when using this.
 Plug 'mg979/vim-visual-multi'               " Multi-cursor. Use <ctrl-n> to add selection and <Tab> to switch between cursor-mode and visual-mode.
@@ -209,6 +228,15 @@ set shortmess+=c   " Shut off completion messages
 set shortmess-=S   " Show number of matches in searc
 set startofline    " Change cursor location to start of line when doing things like ^U, ^D
 set colorcolumn=80 " column marker
+set textwidth=80   " Autowrap at 80
+" Format options: control autowrap and manual `gq` behvaior
+" set formatoptions=tcqj  
+" `q` messes up manual format `gq` for lists etc.
+autocmd FileType markdown setlocal formatoptions-=q
+" Map gq to use black for Python files
+if executable('black')
+    autocmd FileType python setlocal formatprg=black\ -q\ -
+endif
 set nofoldenable
 set exrc           " project-specific vimrc
 set secure         " project-specific vimrc
@@ -259,10 +287,6 @@ endif
 
 " Use clipboard
 set clipboard=unnamed
-
-" Quickly switch between tabs
-nnoremap <c-h> gT
-nnoremap <c-l> gt
 
 """Leader key
 let mapleader = ","
@@ -330,7 +354,6 @@ nmap <silent> <C-k> <Plug>(ale_previous_wrap_error)
 nmap <silent> <C-j> <Plug>(ale_next_wrap_error)
 let g:ale_echo_msg_format = '[%linter%][%code%] %s'
 " let g:ale_echo_msg_format = '[%linter%] %s'
-let g:ale_sign_warning = '!!'
 " Show error in virtual text
 let g:ale_virtualtext_cursor = 0
 " let g:ale_echo_cursor = 0
@@ -338,9 +361,6 @@ let g:ale_virtualtext_cursor = 0
 " let g:ale_set_highlights = 1
 let g:ale_linters = {
 \   'python': ['flake8', 'pylint']
-\}
-let g:ale_fixers = {
-\   'python': ['yapf']
 \}
 " Let pycodestyle report warnings instead of errors. See https://github.com/dense-analysis/ale/issues/758
 let g:ale_type_map = {'flake8': {'ES': 'WS'}}
@@ -354,12 +374,12 @@ let g:ale_python_flake8_options = '--ignore E501'
 
 """ Lsp settings
 
-" Diable diagnostics. Use ALE instead. ALE's highlighting is more precise. May
-" change this if lsp supports better ways of highlighting.
-let g:lsp_diagnostics_enabled = 0
+" Diable diagnostics. Use ALE instead. ALE's highlighting is more precise. 
+" let g:lsp_diagnostics_enabled = 0
 " With this enabled a temporary buffer called 'VS.Vim.Buffer' will be created,
 " which is not loadable when restoring session and causes error.
 let g:lsp_completion_documentation_enabled = 0
+let g:lsp_preview_float = 1
 " let g:lsp_diagnostics_highlights_enabled = 0
 " let g:lsp_diagnostics_float_cursor = 1
 " let g:lsp_diagnostics_float_delay = 500
@@ -397,12 +417,6 @@ let g:lsp_settings_filetype_python = 'jedi-language-server'
 
 
 
-""" Vista settings
-" let g:vista_default_executive = 'ctags'
-" let g:vista#renderer#enable_icon = 0
-" let g:vista_icon_indent = ["▸ ", ""]
-
-
 """ Procession on startup
 let g:prosession_on_startup = 1
 
@@ -437,7 +451,7 @@ endif
 let g:airline_extensions = ['ale', 'hunks', 'ctrlp', 'branch', 'obsession']
 let airline#extensions#ale#show_line_numbers = 0
 " let g:airline_section_y = ''
-let g:airline_section_z = '%p%% ☰ %l/%L'
+let g:airline_section_z = '%p%% ☰ %l/%L, %v'
 
 " See https://stackoverflow.com/questions/48304195/what-are-the-u-and-m-file-markers-in-visual-studio-code
 let g:NERDTreeGitStatusIndicatorMapCustom = {
