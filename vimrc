@@ -16,14 +16,14 @@
 " Quick reference
     " Formatting code (basically, auto wrap): 
     " - The main difference between `gq` and `gw`: `gq` uses `formatprg` which
-    "   is customizable. So the recommandation is
+    "   is can call external program while `gw` does not. So the recommandation is
     "   - If you intend to format code (e.g., using black), use `gq`
     "   - If you intend to autowrap code, use `gw`
     " - where to wrap depends on `textwidth` (see `set textwidth?`)
-    " - `gqq`: formmating current line
-    " - `{Visual}gq`: format selected block
-    " - `gq{motion}`: format the lines across motion 
-    " - `gqap`: format entire paragraph
+    " - `gqq` or `gww`: formmating current line
+    " - `{Visual}gq` or `{Visual}gw` : format selected block
+    " - `gq{motion}` or `gw{motion}`: format the lines across motion 
+    " - `gqap` or `gwap`: format entire paragraph
     " Start vim with read-only mode: use view
     " Delete character before cursor: X
     " Incredibly useful: `q:` and `q/`. 
@@ -154,8 +154,8 @@ Plug 'psliwka/vim-smoothie'                 " Smooth scroll
 Plug 'godlygeek/tabular'                    " Align texts. Command to align python comments: Tabularize /#
 Plug 'tpope/vim-surround'                   " ds' cs' ysiw' S' (in visual mode)
 Plug 'tpope/vim-commentary'                 " Use <C-/> to comment
-Plug 'scrooloose/nerdtree'                  " <C-q> to toggle. 'R' to refresh. Press m to open a menu for things like deleting a file
-Plug 'preservim/tagbar'                 " <C-\>
+Plug 'scrooloose/nerdtree'                  " <leader>e to toggle. 'R' to refresh. Press m to open a menu for things like deleting a file
+Plug 'preservim/tagbar'                     " <leader>t
 Plug 'cohama/lexima.vim'                    " Auto pair
 Plug 'tomasr/molokai'                       " colorscheme
 Plug 'sheerun/vim-polyglot'                 " Better syntax highlighting and indent. Note this includes vim-python-pep8-indent
@@ -167,7 +167,7 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'  " Helper to setup vim-lsp as source 
 Plug 'mattn/vim-lsp-settings'               " 1) For installing language servers (LspInstallServer) 2) For setting up vim-lsp (e.g., which server to use for which language)
 Plug 'tpope/vim-obsession'
 Plug 'dhruvasagar/vim-prosession'           " Session management. <leader>pc to create/load session, <leader>pd to delete session
-Plug 'gikmx/vim-ctrlposession'              " <C-s> to switch session
+Plug 'gikmx/vim-ctrlposession'              " <leader>s to switch session
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'               " next/prev hunk: ]c, [c. Preview/stage/undo: <leader>hp, <leader>hs, <leader>hu
@@ -228,12 +228,23 @@ set shortmess+=c   " Shut off completion messages
 set shortmess-=S   " Show number of matches in searc
 set startofline    " Change cursor location to start of line when doing things like ^U, ^D
 set colorcolumn=80 " column marker
-set textwidth=80   " Autowrap at 80
-" Format options: control autowrap and manual `gq` behvaior
-" set formatoptions=tcqj  
-" `q` messes up manual format `gq` for lists etc.
-autocmd FileType markdown setlocal formatoptions-=q
-" Map gq to use black for Python files
+set textwidth=80   " Autowrap at 80. This is also used by `gq` and `gw`
+" - See `help fo-table`
+" - `t`: autowrap text. 
+" - `r`: autowrap comments
+" - `q`: allow comment autowrap with `gw` and `gw`
+" - `j`: handle comment when joining lines
+" - `r` and `o`: add leader comment when new line or `o`
+" - `n`: recognize lists. See `help formatlistpat`
+" - `tcqj` is the default
+" - For python, `-` is also seen as comment. See `set comments` and 
+"   `help format-comments`. Then `r` and `o` would be incredibly helpful when 
+"   writing doc strings with `-`.
+" - We don't use `t` by default because it can easily mess things up in regular
+"   code. But in markdown it is actually desirable.
+set formatoptions=cqjron 
+autocmd FileType markdown setlocal formatoptions=tcqjron
+" Make gq use black for Python files if available
 if executable('black')
     autocmd FileType python setlocal formatprg=black\ -q\ -
 endif
@@ -338,6 +349,10 @@ noremap <leader>pc :Prosession <C-z>
 " Delete 
 noremap <leader>pd :ProsessionDelete <C-z>
 
+" vim-markdown, which seems to be used in vim-polyglot
+" Setting this to 1 will have `comments` includes bullet points, which can mess
+" things up big time. See https://github.com/preservim/vim-markdown/issues/126
+let g:vim_markdown_auto_insert_bullets=0
 
 " markdown syntax highlighting
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
