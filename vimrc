@@ -236,20 +236,24 @@ set colorcolumn=80 " column marker
 " - `n`: recognize lists defined by `formatlistpat`
 " - `r` and `o`: continue comment after <CR> and `o`
 " - `tcqj` is the default
-" - It is worthwhile to take a look at `help format-comments`. Note how `-` is
-"   defined as comment in python. This is useful for writing doc strings in
-"   python.
+" - There are two ways to handle list indentation, one is through
+"   `formatlistpat` plus `n` and by defining `comments`. It is worthwhile to
+"   take a look at `help format-comments`. Note how `-` is defined as comment in
+"   python. This is useful for writing doc strings in python. `formatlistpat`
+"   wouldn't work in python because vim cannot recognize ''' style docstring so
+"   it wouldn't do autowrap there.
 set textwidth=80   " Autowrap at 80. This is also used by `gq` and `gw`
-set formatoptions=cqjn
+set formatoptions=cqj
 " For markdown we use `t`. We also disable `indentexpr`, which is defined in
 " `vim-markdown` (used by `vim-polyglot`). It has a weird behavior for new line
 " after a list item, and `indentexpr` takes precedence over the behavior defined
 " by `formatoptions` (unless it returns -1). To see why it is weird see
 "
-" Also we override comments. `vim-markdown` defines `*`, `-`, `+` as comments
-" which lead to strange behavior
+" Also we override `comments`. `vim-markdown` defines `*`, `-`, `+` as
+" `b:*,b:-,b:+` which can lead to undesriable behavior.
 " https://github.com/preservim/vim-markdown/issues/126#issuecomment-485579068
-autocmd FileType markdown setlocal formatoptions=tcqjn indentexpr= comments=b:>
+" Having `n` makes it possible to autowrap correctly for numbered lists.
+autocmd FileType markdown setlocal formatoptions=tcqjn indentexpr= comments=b:>,fb:*,fb:-,fb:+
 " Make gq use black for Python files if available
 if executable('black')
     autocmd FileType python setlocal formatprg=black\ -q\ -
