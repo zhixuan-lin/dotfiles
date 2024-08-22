@@ -228,27 +228,28 @@ set shortmess+=c   " Shut off completion messages
 set shortmess-=S   " Show number of matches in searc
 set startofline    " Change cursor location to start of line when doing things like ^U, ^D
 set colorcolumn=80 " column marker
-set textwidth=80   " Autowrap at 80. This is also used by `gq` and `gw`
 " - See `help fo-table`
-" - `t`: autowrap text
-" - `r`: autowrap comments
+" - `t`: autowrap text (you don't want this say, for python)
+" - `c`: autowrap comments
 " - `q`: allow comment autowrap with `gw` and `gw`
 " - `j`: handle comment when joining lines
-" - `r` and `o`: add comment leader when new line or `o`
+" - `n`: recognize lists defined by `formatlistpat`
+" - `r` and `o`: continue comment after <CR> and `o`
 " - `tcqj` is the default
-" - There are three types of comments. One of them is useful for lists etc. For
-"   example, For python, `-` is also seen as comment. See `set comments` and
-"   `help format-comments`. 
-" - We don't use `t` by default because it can easily mess things up in regular
-"   code. But in markdown it is actually desirable.
-set formatoptions=cqjro
-" For markdown we use `t`. Also note we view lists as the right type of
-" comment. This is way better than vim-polyglot (which uses vim-markdown)'s
-" default of comments=b:>,b:*,b:-,b:+, which does not work well with `r` and `o`.
-" 
-" On the other hand, we don't rely on `formatlistpat` (and `n`) to handle lists.
-" Setting comments seems to work way better with `r` and `o`
-autocmd FileType markdown setlocal formatoptions=tcqjro comments=b:>,fb:*,fb:-,fb:+
+" - It is worthwhile to take a look at `help format-comments`. Note how `-` is
+"   defined as comment in python. This is useful for writing doc strings in
+"   python.
+set textwidth=80   " Autowrap at 80. This is also used by `gq` and `gw`
+set formatoptions=cqjn
+" For markdown we use `t`. We also disable `indentexpr`, which is defined in
+" `vim-markdown` (used by `vim-polyglot`). It has a weird behavior for new line
+" after a list item, and `indentexpr` takes precedence over the behavior defined
+" by `formatoptions` (unless it returns -1). To see why it is weird see
+"
+" Also we override comments. `vim-markdown` defines `*`, `-`, `+` as comments
+" which lead to strange behavior
+" https://github.com/preservim/vim-markdown/issues/126#issuecomment-485579068
+autocmd FileType markdown setlocal formatoptions=tcqjn indentexpr= comments=b:>
 " Make gq use black for Python files if available
 if executable('black')
     autocmd FileType python setlocal formatprg=black\ -q\ -
@@ -319,6 +320,7 @@ if !has('nvim')
     end
 end
 
+
 " Fix annoying indentation behavior in tex files itemize environments.  https://www.reddit.com/r/neovim/comments/991kmv/annoying_auto_indentation_in_tex_files/
 let g:tex_indent_items = 0
 
@@ -353,11 +355,6 @@ noremap <silent> <leader>s :CtrlPObsession <CR>
 noremap <leader>pc :Prosession <C-z>
 " Delete 
 noremap <leader>pd :ProsessionDelete <C-z>
-
-" vim-markdown, which seems to be used in vim-polyglot
-" Setting this to 1 will have `comments` includes bullet points, which can mess
-" things up big time. See https://github.com/preservim/vim-markdown/issues/126
-" let g:vim_markdown_auto_insert_bullets=0
 
 " markdown syntax highlighting
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
