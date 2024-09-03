@@ -15,6 +15,7 @@
     "
 " Quick reference
     " Search the word under cursor: either `*` or `#`. Also works for visual
+    " Close preview window: <c-w>z
     " mode
     " Formatting code (basically, auto wrap): 
     " - The main difference between `gq` and `gw`: `gq` uses `formatprg` which
@@ -230,6 +231,10 @@ set shortmess+=c   " Shut off completion messages
 set shortmess-=S   " Show number of matches in searc
 set startofline    " Change cursor location to start of line when doing things like ^U, ^D
 set colorcolumn=81 " column marker
+" This makes sure that when splitting window, the text in the original window do not move
+" Since lsp-hover calls winrestview, the result won't be the same. I don't know
+" what this function does when window size changes.
+set splitkeep=topline
 
 " - See `help fo-table`
 " - `t`: autowrap text (you don't want this say, for python)
@@ -357,15 +362,14 @@ noremap <silent> <leader>t :TagbarToggle<CR>
 """ Prosession map. See https://stackoverflow.com/questions/45993666/vim-send-tab-keystroke-in-keymapping
 set wildcharm=<C-z>
 " Switch
-noremap <silent> <leader>s :CtrlPObsession <CR>
+noremap <silent> <leader>ss :CtrlPObsession <CR>
 " Create or switch
-noremap <leader>pc :Prosession <C-z>
+noremap <leader>sc :Prosession <C-z>
 " Delete 
-noremap <leader>pd :ProsessionDelete <C-z>
+noremap <leader>sd :ProsessionDelete <C-z>
 
 " markdown syntax highlighting
-" text=$FILETYPE: useful for doc hover
-let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'text=$FILETYPE']
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 
 " auto-pairs
 " Do not pair " in vim
@@ -375,8 +379,9 @@ autocmd Filetype vim let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'", '`':'
 
 
 " ALE, linter
-nmap <silent> <C-k> <Plug>(ale_previous_wrap_error)
-nmap <silent> <C-j> <Plug>(ale_next_wrap_error)
+" We use this because it is the default mapping in neovim language server
+nmap <silent> [d <Plug>(ale_previous_wrap_error)
+nmap <silent> ]d <Plug>(ale_next_wrap_error)
 let g:ale_echo_msg_format = '[%linter%][%code%] %s'
 " let g:ale_echo_msg_format = '[%linter%] %s'
 " Show error in virtual text
@@ -403,8 +408,14 @@ let g:ale_python_flake8_options = '--ignore E501'
 let g:lsp_diagnostics_enabled = 0
 " With this enabled a temporary buffer called 'VS.Vim.Buffer' will be created,
 " which is not loadable when restoring session and causes error.
-" let g:lsp_completion_documentation_enabled = 1
-" let g:lsp_preview_float = 1
+let g:lsp_completion_documentation_enabled = 0
+" Not very useful, and highlighting is messed up
+let g:lsp_signature_help_enabled = 0
+" float hover focus does not seem to work properly
+let g:lsp_hover_ui = 'preview'
+" Not used actually
+let g:lsp_preview_float = 1
+let g:lsp_preview_keep_focus = 0
 " let g:lsp_diagnostics_highlights_enabled = 0
 " let g:lsp_diagnostics_float_cursor = 1
 " let g:lsp_diagnostics_float_delay = 500
@@ -424,7 +435,8 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
     nmap <buffer> K <plug>(lsp-hover)
 
-    let g:lsp_format_sync_timeout = 1000
+    " You might want to change this to say 1000 if too slow
+    let g:lsp_format_sync_timeout = -1
     autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
 
     " refer to doc to add more commands

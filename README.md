@@ -1,5 +1,12 @@
 # Dotfiles
 
+## TODO
+
+Switch to `neovim`'s native LSP client.
+[`lsp-zero.nvim`](https://github.com/VonHeikemen/lsp-zero.nvim) can be a staring
+point.
+
+
 ## Install
 
 Run `install.sh`. After that, if you are not using `zsh`, you may want to restart your session. 
