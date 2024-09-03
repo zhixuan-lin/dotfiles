@@ -14,6 +14,8 @@
     "   https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
     "
 " Quick reference
+    " Search the word under cursor: either `*` or `#`. Also works for visual
+    " mode
     " Formatting code (basically, auto wrap): 
     " - The main difference between `gq` and `gw`: `gq` uses `formatprg` which
     "   is can call external program while `gw` does not. So the recommandation is
@@ -227,7 +229,8 @@ set completeopt=menuone,noselect  " Do not show preview window in auto complete
 set shortmess+=c   " Shut off completion messages
 set shortmess-=S   " Show number of matches in searc
 set startofline    " Change cursor location to start of line when doing things like ^U, ^D
-set colorcolumn=80 " column marker
+set colorcolumn=81 " column marker
+
 " - See `help fo-table`
 " - `t`: autowrap text (you don't want this say, for python)
 " - `c`: autowrap comments
@@ -310,7 +313,7 @@ endif
 set clipboard=unnamed
 
 """Leader key
-let mapleader = ","
+let mapleader = " "
 
 
 " Window resize problem in tmux
@@ -361,7 +364,8 @@ noremap <leader>pc :Prosession <C-z>
 noremap <leader>pd :ProsessionDelete <C-z>
 
 " markdown syntax highlighting
-let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+" text=$FILETYPE: useful for doc hover
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'text=$FILETYPE']
 
 " auto-pairs
 " Do not pair " in vim
@@ -396,11 +400,11 @@ let g:ale_python_flake8_options = '--ignore E501'
 """ Lsp settings
 
 " Diable diagnostics. Use ALE instead. ALE's highlighting is more precise. 
-" let g:lsp_diagnostics_enabled = 0
+let g:lsp_diagnostics_enabled = 0
 " With this enabled a temporary buffer called 'VS.Vim.Buffer' will be created,
 " which is not loadable when restoring session and causes error.
-let g:lsp_completion_documentation_enabled = 0
-let g:lsp_preview_float = 1
+" let g:lsp_completion_documentation_enabled = 1
+" let g:lsp_preview_float = 1
 " let g:lsp_diagnostics_highlights_enabled = 0
 " let g:lsp_diagnostics_float_cursor = 1
 " let g:lsp_diagnostics_float_delay = 500
